@@ -13,6 +13,7 @@
 		B11D559428E3B2AF0046A4CA /* EssentialFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = B11D558628E3B2AF0046A4CA /* EssentialFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B11D559E28E3B2C50046A4CA /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D559D28E3B2C50046A4CA /* FeedItem.swift */; };
 		B11D55A028E3B3C80046A4CA /* IFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D559F28E3B3C80046A4CA /* IFeedLoader.swift */; };
+		B11D55A228E3B43A0046A4CA /* FeedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55A128E3B43A0046A4CA /* FeedResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		B11D559228E3B2AF0046A4CA /* EssentialFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedTests.swift; sourceTree = "<group>"; };
 		B11D559D28E3B2C50046A4CA /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
 		B11D559F28E3B3C80046A4CA /* IFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IFeedLoader.swift; sourceTree = "<group>"; };
+		B11D55A128E3B43A0046A4CA /* FeedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				B11D558728E3B2AF0046A4CA /* EssentialFeed.docc */,
 				B11D559D28E3B2C50046A4CA /* FeedItem.swift */,
 				B11D559F28E3B3C80046A4CA /* IFeedLoader.swift */,
+				B11D55A128E3B43A0046A4CA /* FeedResult.swift */,
 			);
 			path = EssentialFeed;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			files = (
 				B11D55A028E3B3C80046A4CA /* IFeedLoader.swift in Sources */,
 				B11D559E28E3B2C50046A4CA /* FeedItem.swift in Sources */,
+				B11D55A228E3B43A0046A4CA /* FeedResult.swift in Sources */,
 				B11D558828E3B2AF0046A4CA /* EssentialFeed.docc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
