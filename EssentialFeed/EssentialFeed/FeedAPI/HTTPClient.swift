@@ -1,3 +1,3 @@
 public protocol HTTPClient {
-    func get(from url: URL, completion: @escaping ((Error) -> Void))
+    func get(from url: URL, completion: @escaping ((HTTPClientResult) -> Void))
 }
