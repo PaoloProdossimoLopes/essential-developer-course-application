@@ -45,7 +45,8 @@ final class RemoteFeedLoaderTests: XCTestCase {
         samples.forEach { (index, statusCode) in
             
             expect(sut, completeWith: .failure(.invalidData)) {
-                client.complete(with: statusCode, at: index)
+                let validJSON = makeItemJSON([])
+                client.complete(with: statusCode, data: validJSON, at: index)
             }
         }
     }
@@ -68,6 +69,19 @@ final class RemoteFeedLoaderTests: XCTestCase {
         }
     }
     
+    func test_load_deliversItemOn200HTTPResponseWitjJSONItems() {
+        let (sut, client) = makeSUT()
+        
+        let item1 = makeItem(id: .init(), description: nil, location: nil, imageURL: URL(string: "https://a-url.com")!)
+        
+        let item2 = makeItem(id: .init(), description: "any-description", location: "any-localtion", imageURL: URL(string: "https://any-other-url.com")!)
+        
+        expect(sut, completeWith: .success([item1.model, item2.model])) {
+            let json = makeItemJSON([item1.json, item2.json])
+            client.complete(with: 200, data: json)
+        }
+    }
+    
     //MARK: - Helpers
     private func makeSUT(
         url: URL = URL(string: "https://www.any-mock-url.com")!
@@ -78,6 +92,35 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(url: url, client: client)
         return (sut, client)
+    }
+    
+    private func makeItemJSON(_ items: [[String: Any]]) -> Data {
+        let jsonItem = ["items": items]
+        return try! JSONSerialization.data(withJSONObject: jsonItem)
+    }
+    
+    private func makeItem(
+        id: UUID, description: String? = nil,
+        location: String? = nil, imageURL: URL
+    ) -> (
+        model: FeedItem, json: [String: Any]
+    ) {
+        let item = FeedItem(
+            id: id, description: description,
+            location: location, imageURL: imageURL)
+        
+        let json = [
+            "id": id.uuidString,
+            "description": description,
+            "location": location,
+            "image": imageURL.absoluteString
+        ].reduce(into: [String: Any](), { (accumulate, element) in
+            if let value = element.value {
+                accumulate[element.key] = value
+            }
+        })
+        
+        return (item, json)
     }
     
     private func expect(
@@ -112,7 +155,7 @@ final class HTTPClientSpy: HTTPClient {
         messages[index].completion(.failure(error))
     }
     
-    func complete(with statusCode: Int, data: Data = Data(), at index: Int = 0) {
+    func complete(with statusCode: Int, data: Data, at index: Int = 0) {
         let url = requestURLs[index]
         let response = HTTPURLResponse(
             url: url, statusCode: statusCode,
@@ -121,3 +164,4 @@ final class HTTPClientSpy: HTTPClient {
         messages[index].completion(.success(data, response))
     }
 }
+
