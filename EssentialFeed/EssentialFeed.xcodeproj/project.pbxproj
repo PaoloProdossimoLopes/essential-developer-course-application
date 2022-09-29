@@ -18,6 +18,7 @@
 		B11D55A828E3C4120046A4CA /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55A728E3C4120046A4CA /* RemoteFeedLoader.swift */; };
 		B11D55AA28E3C4210046A4CA /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55A928E3C4210046A4CA /* HTTPClient.swift */; };
 		B11D55AC28E4EA250046A4CA /* HTTPClientResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55AB28E4EA250046A4CA /* HTTPClientResult.swift */; };
+		B11D55AE28E667640046A4CA /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55AD28E667640046A4CA /* FeedItemsMapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		B11D55A728E3C4120046A4CA /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
 		B11D55A928E3C4210046A4CA /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		B11D55AB28E4EA250046A4CA /* HTTPClientResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientResult.swift; sourceTree = "<group>"; };
+		B11D55AD28E667640046A4CA /* FeedItemsMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				B11D55A728E3C4120046A4CA /* RemoteFeedLoader.swift */,
 				B11D55A928E3C4210046A4CA /* HTTPClient.swift */,
 				B11D55AB28E4EA250046A4CA /* HTTPClientResult.swift */,
+				B11D55AD28E667640046A4CA /* FeedItemsMapper.swift */,
 			);
 			path = FeedAPI;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				B11D55A028E3B3C80046A4CA /* IFeedLoader.swift in Sources */,
 				B11D559E28E3B2C50046A4CA /* FeedItem.swift in Sources */,
 				B11D55AA28E3C4210046A4CA /* HTTPClient.swift in Sources */,
+				B11D55AE28E667640046A4CA /* FeedItemsMapper.swift in Sources */,
 				B11D55A228E3B43A0046A4CA /* FeedResult.swift in Sources */,
 				B11D55A828E3C4120046A4CA /* RemoteFeedLoader.swift in Sources */,
 				B11D558828E3B2AF0046A4CA /* EssentialFeed.docc in Sources */,
