@@ -64,7 +64,8 @@ final class RemoteFeedLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         
         expect(sut, completeWith: .success([])) {
-            let emptyListJSON = Data("{\"items\": []}".utf8)
+            //let emptyListJSON = Data("{\"items\": []}".utf8)//Hard code method
+            let emptyListJSON = makeItemJSON([])
             client.complete(with: 200, data: emptyListJSON)
         }
     }
@@ -72,9 +73,14 @@ final class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversItemOn200HTTPResponseWitjJSONItems() {
         let (sut, client) = makeSUT()
         
-        let item1 = makeItem(id: .init(), description: nil, location: nil, imageURL: URL(string: "https://a-url.com")!)
+        let item1 = makeItem(
+            id: .init(), description: nil,
+            location: nil, imageURL: URL(string: "https://a-url.com")!)
         
-        let item2 = makeItem(id: .init(), description: "any-description", location: "any-localtion", imageURL: URL(string: "https://any-other-url.com")!)
+        let item2 = makeItem(
+            id: .init(), description: "any-description",
+            location: "any-localtion",
+            imageURL: URL(string: "https://any-other-url.com")!)
         
         expect(sut, completeWith: .success([item1.model, item2.model])) {
             let json = makeItemJSON([item1.json, item2.json])
@@ -144,7 +150,10 @@ final class RemoteFeedLoaderTests: XCTestCase {
 
 final class HTTPClientSpy: HTTPClient {
     
-    private(set) var messages: [(url: URL, completion: ((HTTPClientResult) -> Void))] = []
+    private(set) var messages: [
+        (url: URL, completion: ((HTTPClientResult) -> Void))
+    ] = []
+    
     var requestURLs: [URL] { messages.map(\.url) }
     
     func get(from url: URL, completion: @escaping ((HTTPClientResult) -> Void)) {
@@ -164,4 +173,3 @@ final class HTTPClientSpy: HTTPClient {
         messages[index].completion(.success(data, response))
     }
 }
-
