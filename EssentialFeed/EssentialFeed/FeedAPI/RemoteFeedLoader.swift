@@ -1,4 +1,4 @@
-public final class RemoteFeedLoader {
+public final class RemoteFeedLoader: IFeedLoader {
     
     private let client: HTTPClient
     private let url: URL
@@ -8,10 +8,7 @@ public final class RemoteFeedLoader {
         case invalidData
     }
     
-    public enum Result: Equatable {
-        case success([FeedItem])
-        case failure(Error)
-    }
+    public typealias Result = FeedResult<Error>
     
     public init(url: URL, client: HTTPClient) {
         self.url = url
@@ -30,15 +27,16 @@ public final class RemoteFeedLoader {
         case let .success(data, response):
             completion(map(data, response))
         case .failure:
-            completion(.failure(.noConectivity))
+            completion(.failure(RemoteFeedLoader.Error.noConectivity))
         }
     }
     
     private func map(_ data: Data, _ response: HTTPURLResponse) -> Result {
         guard let feedItems = try? FeedItemsMapper.map(data, response) else {
-            return .failure(.invalidData)
+            return .failure(RemoteFeedLoader.Error.invalidData)
         }
         
         return .success(feedItems)
     }
 }
+
