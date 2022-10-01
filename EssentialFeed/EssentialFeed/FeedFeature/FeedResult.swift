@@ -1,8 +1,4 @@
-public enum FeedResult<Error: Swift.Error> {
+public enum FeedResult {
     case success([FeedItem])
     case failure(Error)
-}
-
-extension FeedResult: Equatable where Error: Equatable {
-    
 }

@@ -1,4 +1,3 @@
 public protocol IFeedLoader {
-    associatedtype Error: Swift.Error
-    func load(completion: @escaping ((FeedResult<Error>) -> Void))
+    func load(completion: @escaping ((FeedResult) -> Void))
 }
