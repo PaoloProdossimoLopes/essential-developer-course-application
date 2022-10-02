@@ -1,10 +1,18 @@
 import XCTest
 import EssentialFeed
 
+protocol IHTTSession {
+    func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> IURLSessionDataTask
+}
+
+protocol IURLSessionDataTask {
+    func resume()
+}
+
 final class URLSessionHTTPClient {
-    private let session: URLSession
+    private let session: IHTTSession
     
-    init(session: URLSession) {
+    init(session: IHTTSession) {
         self.session = session
     }
     
@@ -69,26 +77,26 @@ final class URLSessionHTTPClientTests: XCTestCase {
         return (sut, session)
     }
     
-    private class URLSessionSpy: URLSession {
+    private class URLSessionSpy: IHTTSession {
         
         private(set) var recievedURL: [URL] = []
         private var stubs: Stub?
         
         private struct Stub {
             let url: URL
-            let task: URLSessionDataTask
+            let task: IURLSessionDataTask
             let error: Error?
         }
         
         func stub(
             from url: URL,
-            task: URLSessionDataTask = FakeURLSessionDataTask(),
+            task: IURLSessionDataTask = FakeURLSessionDataTask(),
             error: Error? = nil
         ) {
             stubs = .init(url: url, task: task, error: error)
         }
         
-        override func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+        func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> IURLSessionDataTask {
             recievedURL.append(url)
             if let stub = stubs {
                 completionHandler(nil, nil, stub.error)
@@ -98,16 +106,14 @@ final class URLSessionHTTPClientTests: XCTestCase {
         }
     }
     
-    private class FakeURLSessionDataTask: URLSessionDataTask {
-        override func resume() {
-            //Do Nothing
-        }
+    private class FakeURLSessionDataTask: IURLSessionDataTask {
+        func resume() { /*Do Nothing*/ }
     }
     
-    private class URLSessionDataTaskSpy: URLSessionDataTask {
+    private class URLSessionDataTaskSpy: IURLSessionDataTask {
         var resumeCallCount = 0
         
-        override func resume() {
+        func resume() {
             resumeCallCount += 1
         }
     }
