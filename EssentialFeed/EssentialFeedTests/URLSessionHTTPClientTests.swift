@@ -19,10 +19,17 @@ final class URLSessionHTTPClient {
 
 final class URLSessionHTTPClientTests: XCTestCase {
     
+    override func setUp() {
+        super.setUp()
+        URLProtocolStub.startInterceptingRequests()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        URLProtocolStub.stopInterceptingRequests()
+    }
     
     func test_getFromURL_performsGETRequestWithURL() {
-        URLProtocolStub.startInterceptingRequests()
-        
         let url = URL(string: "http://any-url.com")!
         let expect = expectation(description: "wait to complete")
         URLProtocolStub.observeRequest { request in
@@ -31,22 +38,18 @@ final class URLSessionHTTPClientTests: XCTestCase {
             expect.fulfill()
         }
         
-        let sut = URLSessionHTTPClient()
-        sut.get(from: url) { _ in }
+        makeSUT().get(from: url) { _ in }
         
         wait(for: [expect], timeout: 1.0)
-        URLProtocolStub.stopInterceptingRequests()
     }
     
     func test_getFromURLMethod_passURL_failsOnRequestError() {
-        URLProtocolStub.startInterceptingRequests() //Add the top of test
         let url = URL(string: "http://any-url.com")!
-        let sut = URLSessionHTTPClient()
         let error = NSError(domain: "any-error", code: -1)
         URLProtocolStub.stub(error: error)
         
         let expect = expectation(description: "wait")
-        sut.get(from: url) { result in
+        makeSUT().get(from: url) { result in
             switch result {
             case let .failure(recievedError as NSError):
                 XCTAssertEqual(recievedError.code, error.code)
@@ -59,10 +62,18 @@ final class URLSessionHTTPClientTests: XCTestCase {
         }
         
         wait(for: [expect], timeout: 1.0)
-        URLProtocolStub.stopInterceptingRequests() //Add the end of test
     }
     
     //MARK: - Helpers
+    
+    private func makeSUT(
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> URLSessionHTTPClient {
+        let sut = URLSessionHTTPClient()
+        checkMemoryLeak(sut, file: file, line: line)
+        return sut
+    }
     
     private class URLProtocolStub: URLProtocol {
         
