@@ -1,30 +1,6 @@
 import XCTest
 import EssentialFeed
 
-final class URLSessionHTTPClient {
-    private let session: URLSession
-    
-    
-    struct UnexpectedRepresentationError: Error { }
-    
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-    
-    func get(from url: URL, completion: @escaping ((HTTPClientResult) -> Void)) {
-        session.dataTask(with: url) { (data, response, error) in
-            if let error {
-                completion(.failure(error))
-                
-            } else if let data = data, let response = response as? HTTPURLResponse {
-                completion(.success(data, response))
-            } else {
-                completion(.failure(UnexpectedRepresentationError()))
-            }
-        }.resume()
-    }
-}
-
 final class URLSessionHTTPClientTests: XCTestCase {
     
     override func setUp() {
@@ -171,7 +147,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     private func makeSUT(
         file: StaticString = #filePath,
         line: UInt = #line
-    ) -> URLSessionHTTPClient {
+    ) -> HTTPClient {
         let sut = URLSessionHTTPClient()
         checkMemoryLeak(sut, file: file, line: line)
         return sut
