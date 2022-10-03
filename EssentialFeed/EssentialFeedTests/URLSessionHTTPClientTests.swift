@@ -36,6 +36,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURL_performsGETRequestWithURL() {
         let url = makeAnyURL()
+        
         let expect = expectation(description: "wait to complete")
         URLProtocolStub.observeRequest { request in
             XCTAssertEqual(request.url, url)
@@ -59,14 +60,41 @@ final class URLSessionHTTPClientTests: XCTestCase {
     
     func test_getFromURLMethod_passURL_failsOnAllNillValues() {
         XCTAssertNotNil(resultFailure())
+    }
+    
+    func test_getFromURLMethod_passNonHTTPURL_completesWithFailure() {
         XCTAssertNotNil(resultFailure(urlRequest: makeNonHTTPURLResponse()))
+    }
+    
+    func test_getFromURLMethod_onlyHTTPURLResponseAreNotNil_completesWithFailure() {
         XCTAssertNotNil(resultFailure(urlRequest: makeAnyHTTPURLResponse()))
+    }
+    
+    func test_getFromURL_passOnlyAnyData_completesWithFailure() {
         XCTAssertNotNil(resultFailure(data: makeAnyData()))
+    }
+    
+    func test_getFromURL_passAnyDataAndError_completesWithFailure() {
         XCTAssertNotNil(resultFailure(data: makeAnyData(), error: makeAnyNSError()))
+    }
+    
+    func test_getFromURL_passAnyErrorAndNonHTTPURLResponse_completesWithFailure() {
         XCTAssertNotNil(resultFailure(urlRequest: makeNonHTTPURLResponse(), error: makeAnyNSError()))
+    }
+    
+    func test_getFromURL_passAnyHTTPURLResponseAndError_completesWithFailure() {
         XCTAssertNotNil(resultFailure(urlRequest: makeAnyHTTPURLResponse(), error: makeAnyNSError()))
+    }
+    
+    func test_getFromURL_passAnyDataWithNonHTTPURLResponseAndError_completesWithFailure() {
         XCTAssertNotNil(resultFailure(data: makeAnyData(), urlRequest: makeNonHTTPURLResponse(), error: makeAnyNSError()))
+    }
+    
+    func test_getFromURL_passAnyDataWithAnyHTTPURLResponseAndError_completesWithFailure() {
         XCTAssertNotNil(resultFailure(data: makeAnyData(), urlRequest: makeAnyHTTPURLResponse(), error: makeAnyNSError()))
+    }
+    
+    func test_getFromURL_passAnyDataAndNonHTTPURLResponse_completesWithFailure() {
         XCTAssertNotNil(resultFailure(data: makeAnyData(), urlRequest: makeNonHTTPURLResponse(), error: nil))
     }
     
@@ -118,7 +146,7 @@ final class URLSessionHTTPClientTests: XCTestCase {
     }
     
     private func makeAnyHTTPURLResponse() -> HTTPURLResponse {
-        return HTTPURLResponse(url: makeAnyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)
+        return HTTPURLResponse(url: makeAnyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
     
     private func makeAnyData() -> Data {
