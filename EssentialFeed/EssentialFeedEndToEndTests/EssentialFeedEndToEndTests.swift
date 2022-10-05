@@ -1,35 +1,91 @@
-//
-//  EssentialFeedEndToEndTests.swift
-//  EssentialFeedEndToEndTests
-//
-//  Created by Paolo Prodossimo Lopes on 04/10/22.
-//
-
 import XCTest
+import EssentialFeed
 
 final class EssentialFeedEndToEndTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
+        let url = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/fedd")!
+        let client = URLSessionHTTPClient()
+        let loader = RemoteFeedLoader(url: url, client: client)
+        
+        let expectation = expectation(description: "wait loader complete")
+        var recievedResult: FeedResult?
+        loader.load {
+            recievedResult = $0
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+        
+        switch recievedResult {
+        case let .success(items)?:
+            XCTAssertEqual(items.count, 8, "Expect 8 itens in the test account feed")
+            
+            let elementsEnuerated = items.enumerated()
+            elementsEnuerated.forEach { (index, item) in
+                XCTAssertEqual(item, expectedItem(at: index))
+            }
+            
+        case let .failure(error)?:
+            XCTFail("Expected successful feed result, got \(error) instead")
+            
+        default:
+            XCTFail("Expected successful feed result, got no result (nil)  instead")
         }
     }
+}
 
+//MARK: - Helper
+private extension EssentialFeedEndToEndTests {
+    
+    func expectedItem(at index: Int) -> FeedItem {
+        return .init(
+            id: id(at: index), description: description(at: index),
+            location: location(at: index), imageURL: imageURL(at: index)
+        )
+    }
+    
+    func id(at index: Int) -> UUID {
+        return UUID(uuidString: [
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
+            "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6"
+        ][index])!
+    }
+    
+    func description(at index: Int) -> String? {
+        return [
+            "Description 1",
+            nil,
+            "Description 3",
+            nil,
+            "Description 5",
+            "Description 6",
+            "Description 7",
+            "Description 8",
+        ][index]
+    }
+    
+    func location(at index: Int) -> String? {
+        return [
+            "Location 1",
+            "Location 2",
+            nil,
+            nil,
+            "Location 5",
+            "Location 6",
+            "Location 7",
+            "Location 8",
+        ][index]
+    }
+    
+    func imageURL(at index: Int) -> URL {
+        let position = index + 1
+        return URL(string: "https://url-\(position).com")!
+    }
 }
