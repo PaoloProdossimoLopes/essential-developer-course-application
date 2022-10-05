@@ -4,18 +4,8 @@ import EssentialFeed
 final class EssentialFeedEndToEndTests: XCTestCase {
     
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
-        let url = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/fedd")!
-        let client = URLSessionHTTPClient()
-        let loader = RemoteFeedLoader(url: url, client: client)
-        
-        let expectation = expectation(description: "wait loader complete")
-        var recievedResult: FeedResult?
-        loader.load {
-            recievedResult = $0
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
+        let loader = makeSUT()
+        let recievedResult = recievedResult(from: loader)
         
         switch recievedResult {
         case let .success(items)?:
@@ -37,6 +27,29 @@ final class EssentialFeedEndToEndTests: XCTestCase {
 
 //MARK: - Helper
 private extension EssentialFeedEndToEndTests {
+    
+    func makeSUT() -> RemoteFeedLoader {
+        let url = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/fedd")!
+        let client = URLSessionHTTPClient()
+        let loader = RemoteFeedLoader(url: url, client: client)
+        
+        checkMemoryLeak(loader)
+        checkMemoryLeak(client)
+        
+        return loader
+    }
+    
+    func recievedResult(from loader: RemoteFeedLoader) -> FeedResult? {
+        let expectation = expectation(description: "wait loader complete")
+        var recievedResult: FeedResult?
+        loader.load {
+            recievedResult = $0
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+        return recievedResult
+    }
     
     func expectedItem(at index: Int) -> FeedItem {
         return .init(
