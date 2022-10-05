@@ -4,9 +4,8 @@ import EssentialFeed
 final class EssentialFeedEndToEndTests: XCTestCase {
     
     //MARK: This code are comment because API dont are alive so always fails, so comment this test to dont stuck me in project
-    
-//
-//    func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
+
+    func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
 //        let loader = makeSUT()
 //        let recievedResult = recievedResult(from: loader)
 //
@@ -25,7 +24,7 @@ final class EssentialFeedEndToEndTests: XCTestCase {
 //        default:
 //            XCTFail("Expected successful feed result, got no result (nil)  instead")
 //        }
-//    }
+    }
 }
 
 //MARK: - Helper
