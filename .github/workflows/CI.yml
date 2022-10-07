@@ -20,5 +20,5 @@ jobs:
         run: sudo xcode-select -switch /Applications/Xcode.app
 
       - name: Build and Test
-        run: xcodebuild clean build test -project EssentialFeed/EssentialFeed.xcodeproj -scheme "EssentialFeed" CODE_SIGN_IDENTITY="" CODE_SIGN_REQUIRED=NO
+        run: xcodebuild clean build test -project EssentialFeed/EssentialFeed.xcodeproj -scheme "CI" CODE_SIGN_IDENTITY="" CODE_SIGN_REQUIRED=NO
 
