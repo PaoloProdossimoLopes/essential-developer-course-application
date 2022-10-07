@@ -33,7 +33,8 @@ private extension EssentialFeedEndToEndTests {
     
     func makeSUT() -> RemoteFeedLoader {
         let url = URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
-        let client = URLSessionHTTPClient()
+        let session = URLSession(configuration: .ephemeral)
+        let client = URLSessionHTTPClient(session: session)
         let loader = RemoteFeedLoader(url: url, client: client)
         
         checkMemoryLeak(loader)
@@ -50,7 +51,7 @@ private extension EssentialFeedEndToEndTests {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 7.0)
+        wait(for: [expectation], timeout: 10.0)
         return recievedResult
     }
     
