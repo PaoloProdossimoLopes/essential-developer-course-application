@@ -64,19 +64,10 @@ final class CacheFeedUseCaseTest: XCTestCase {
     func test_save_failsOnDeletionError() {
         let timestamp = Date()
         let (sut, store) = makeSUT(currentDate: { timestamp })
-        let items = uniqueItem().asList
         let deletionError = makeAnyNSError()
-        
-        let expect = expectation(description: "waiting for save completion")
-        var recievedError: Error?
-        sut.save(items) { error in
-            recievedError = error
-            expect.fulfill()
-        }
-        store.completeDeletion(with: deletionError)
-        wait(for: [expect], timeout: 1.0)
-        
-        XCTAssertEqual(recievedError as? NSError, deletionError)
+        expect(sut, toCompleteWithError: deletionError, when: {
+            store.completeDeletion(with: deletionError)
+        })
     }
     
     func test_save_failsOnInsertionError() {
@@ -92,19 +83,11 @@ final class CacheFeedUseCaseTest: XCTestCase {
     func test_save_succeedsOnSuccessfullInsertion() {
         let timestamp = Date()
         let (sut, store) = makeSUT(currentDate: { timestamp })
-        let items = uniqueItem().asList
-        
-        let expect = expectation(description: "waiting for save completion")
-        var recievedError: Error?
-        sut.save(items) { error in
-            recievedError = error
-            expect.fulfill()
-        }
-        store.completeDeletionSuccessfull()
-        store.completeInsertionSuccessfull()
-        wait(for: [expect], timeout: 1.0)
-        
-        XCTAssertNil(recievedError)
+        let insertionError = makeAnyNSError()
+        expect(sut, toCompleteWithError: insertionError, when: {
+            store.completeDeletionSuccessfull()
+            store.completeInsertion(with: insertionError)
+        })
     }
 }
 
