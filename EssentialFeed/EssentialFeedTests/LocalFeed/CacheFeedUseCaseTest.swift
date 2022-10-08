@@ -72,7 +72,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
         
-        var recievedResults = [Error?]()
+        var recievedResults = [LocalFeedLoader.SaveResult]()
         sut?.save([uniqueItem()], completion: { recievedResults.append($0) })
         sut = nil
         store.completeDeletion(with: makeAnyNSError())
@@ -120,7 +120,7 @@ private extension CacheFeedUseCaseTest {
         line: UInt = #line
     ) {
         let expect = expectation(description: "waiting for save completion")
-        var recievedError: Error?
+        var recievedError: LocalFeedLoader.SaveResult?
         sut.save(uniqueItem().asList) { error in
             recievedError = error
             expect.fulfill()
