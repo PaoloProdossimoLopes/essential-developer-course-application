@@ -41,7 +41,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
     
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
         let (sut, store) = makeSUT()
-        let deletionError = NSError(domain: "any-deletion-error", code: 0)
+        let deletionError = makeAnyNSError()
         
         let items = uniqueItem().asList
         sut.save(items) { _ in }
@@ -65,7 +65,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let timestamp = Date()
         let (sut, store) = makeSUT(currentDate: { timestamp })
         let items = uniqueItem().asList
-        let deletionError = NSError(domain: "any-deletion-error", code: 0)
+        let deletionError = makeAnyNSError()
         
         let expect = expectation(description: "waiting for save completion")
         var recievedError: Error?
@@ -83,7 +83,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let timestamp = Date()
         let (sut, store) = makeSUT(currentDate: { timestamp })
         let items = uniqueItem().asList
-        let insertionError = NSError(domain: "any-deletion-error", code: 0)
+        let insertionError = makeAnyNSError()
         
         let expect = expectation(description: "waiting for save completion")
         var recievedError: Error?
