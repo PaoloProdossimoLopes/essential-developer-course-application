@@ -10,10 +10,12 @@ final class LocalFeedLoader {
         self.currentDate = currentDate
     }
     
-    func save(_ items: [FeedItem]) {
+    func save(_ items: [FeedItem], completion: @escaping ((Error?) -> Void)) {
         store.deleteCache { [unowned self] error in
             if error == nil {
                 self.store.insertCache(items, timestamp: self.currentDate())
+            } else {
+                completion(error)
             }
         }
     }
@@ -30,7 +32,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let (sut, store) = makeSUT()
         
         let items = uniqueItem().asList
-        sut.save(items)
+        sut.save(items) { _ in }
         
         XCTAssertEqual(store.recievedMessages, [.deleteCache])
     }
@@ -40,7 +42,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let deletionError = NSError(domain: "any-deletion-error", code: 0)
         
         let items = uniqueItem().asList
-        sut.save(items)
+        sut.save(items) { _ in }
         store.completeDeletion(with: deletionError)
         
         XCTAssertEqual(store.recievedMessages, [.deleteCache])
@@ -51,10 +53,28 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let (sut, store) = makeSUT(currentDate: { timestamp })
         
         let items = uniqueItem().asList
-        sut.save(items)
+        sut.save(items) { _ in }
         store.completeDeletionSuccessfull()
         
         XCTAssertEqual(store.recievedMessages, [.deleteCache, .insert(items, timestamp)])
+    }
+    
+    func test_save_failsOnDeletionError() {
+        let timestamp = Date()
+        let (sut, store) = makeSUT(currentDate: { timestamp })
+        let items = uniqueItem().asList
+        let deletionError = NSError(domain: "any-deletion-error", code: 0)
+        
+        let expect = expectation(description: "waiting for save completion")
+        var recievedError: Error?
+        sut.save(items) { error in
+            recievedError = error
+            expect.fulfill()
+        }
+        store.completeDeletion(with: deletionError)
+        wait(for: [expect], timeout: 1.0)
+        
+        XCTAssertEqual(recievedError as? NSError, deletionError)
     }
 }
 
@@ -85,9 +105,7 @@ private extension CacheFeedUseCaseTest {
 }
 
 extension FeedItem {
-    var asList: [FeedItem] {
-        [self]
-    }
+    var asList: [FeedItem] { [self] }
 }
 
 final class FeedStore {
