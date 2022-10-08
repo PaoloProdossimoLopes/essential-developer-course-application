@@ -21,9 +21,9 @@ final class LocalFeedLoader {
 
 final class CacheFeedUseCaseTest: XCTestCase {
     
-    func test_init_doesNotDeleteCache_uponSUTCreation() {
+    func test_init_doesNotMessageCache_uponSUTCreation() {
         let (_, store) = makeSUT()
-        XCTAssertEqual(store.deleteCachedFeedCallCount, 0)
+        XCTAssertEqual(store.recievedMessages, [])
     }
     
     func test_save_requestsCacheDeletion() {
@@ -32,7 +32,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         let items = uniqueItem().asList
         sut.save(items)
         
-        XCTAssertEqual(store.deleteCachedFeedCallCount, 1)
+        XCTAssertEqual(store.recievedMessages, [.deleteCache])
     }
     
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
@@ -43,7 +43,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         sut.save(items)
         store.completeDeletion(with: deletionError)
         
-        XCTAssertEqual(store.insertions.count, 0)
+        XCTAssertEqual(store.recievedMessages, [.deleteCache])
     }
     
     func test_save_requestNewCacheInsertionWithTimestampOnSuccessfullDeletion() {
@@ -54,9 +54,7 @@ final class CacheFeedUseCaseTest: XCTestCase {
         sut.save(items)
         store.completeDeletionSuccessfull()
         
-        XCTAssertEqual(store.insertions.count, 1)
-        XCTAssertEqual(store.insertions.first?.items, items)
-        XCTAssertEqual(store.insertions.first?.timestamp, timestamp)
+        XCTAssertEqual(store.recievedMessages, [.deleteCache, .insert(items, timestamp)])
     }
 }
 
@@ -95,20 +93,25 @@ extension FeedItem {
 final class FeedStore {
     typealias DeletionCompletion = ((Error?) -> Void)
     
-    private(set) var deleteCachedFeedCallCount = 0
-    private(set) var insertions = [(items: [FeedItem], timestamp: Date)]()
+    enum RecievedMessages: Equatable {
+        case deleteCache
+        case insert([FeedItem], Date)
+    }
     
+    private(set) var recievedMessages = [RecievedMessages]()
     private var deletionsCompletion = [DeletionCompletion]()
     
+    //MARK: - Methods
     func deleteCache(completion: @escaping DeletionCompletion) {
-        deleteCachedFeedCallCount += 1
         deletionsCompletion.append(completion)
+        recievedMessages.append(.deleteCache)
     }
     
     func insertCache(_ items: [FeedItem], timestamp: Date) {
-        insertions.append((items, timestamp))
+        recievedMessages.append(.insert(items, timestamp))
     }
     
+    //MARK: - Spies
     func completeDeletion(with error: Error?, at index: Int = 0) {
         deletionsCompletion[index](error)
     }
