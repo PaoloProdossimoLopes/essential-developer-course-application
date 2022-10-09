@@ -3,10 +3,10 @@ import Foundation
 struct FeedItemsMapper {
     
     private struct Root: Decodable {
-        let items: [RemoteFeedItem]
+        let items: [RemoteFeedImage]
     }
     
-    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [RemoteFeedItem] {
+    static func map(_ data: Data, _ response: HTTPURLResponse) throws -> [RemoteFeedImage] {
         guard response.statusCode == 200 else {
             throw RemoteFeedLoader.Error.invalidData
         }

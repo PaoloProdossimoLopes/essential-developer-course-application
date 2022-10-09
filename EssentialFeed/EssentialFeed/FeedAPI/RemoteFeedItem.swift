@@ -1,8 +1,13 @@
 import Foundation
 
-struct RemoteFeedItem: Decodable {
+struct RemoteFeedImage: Decodable {
     let id: UUID
     let description: String?
     let location: String?
-    let image: URL
+    let url: URL
+    
+    enum CodingKeys: String, CodingKey {
+        case id, description, location
+        case url = "image"
+    }
 }

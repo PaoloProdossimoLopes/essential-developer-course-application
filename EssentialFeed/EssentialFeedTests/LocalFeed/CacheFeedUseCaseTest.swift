@@ -131,16 +131,16 @@ private extension CacheFeedUseCaseTest {
         XCTAssertEqual(recievedError as? NSError, expectedError, file: file, line: line)
     }
     
-    func uniqueItem() -> FeedItem {
+    func uniqueItem() -> FeedImage {
         .init(
             id: .init(), description: "any-description",
-            location: "any-location", imageURL: URL(string: "https://any-url.com")!
+            location: "any-location", url: URL(string: "https://any-url.com")!
         )
     }
     
-    func uniqueItems() -> (models: [FeedItem], local: [LocalFeedItem]) {
+    func uniqueItems() -> (models: [FeedImage], local: [LocalFeedImage]) {
         let model = uniqueItem().asList
-        let lcoal = model.map { LocalFeedItem(id: $0.id, description: $0.description, location: $0.location, imageURL: $0.imageURL) }
+        let lcoal = model.map { LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.image) }
         return (model, lcoal)
     }
     
@@ -148,7 +148,7 @@ private extension CacheFeedUseCaseTest {
         
         enum RecievedMessages: Equatable {
             case deleteCache
-            case insert([LocalFeedItem], Date)
+            case insert([LocalFeedImage], Date)
         }
         
         private(set) var recievedMessages = [RecievedMessages]()
@@ -161,7 +161,7 @@ private extension CacheFeedUseCaseTest {
             recievedMessages.append(.deleteCache)
         }
         
-        func insertCache(_ items: [LocalFeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+        func insertCache(_ items: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
             recievedMessages.append(.insert(items, timestamp))
             insertionCompletions.append(completion)
         }
@@ -185,6 +185,6 @@ private extension CacheFeedUseCaseTest {
     }
 }
 
-extension FeedItem {
-    var asList: [FeedItem] { [self] }
+extension FeedImage {
+    var asList: [FeedImage] { [self] }
 }

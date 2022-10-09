@@ -75,12 +75,12 @@ final class RemoteFeedLoaderTests: XCTestCase {
         
         let item1 = makeItem(
             id: .init(), description: nil,
-            location: nil, imageURL: URL(string: "https://a-url.com")!)
+            location: nil, image: URL(string: "https://a-url.com")!)
         
         let item2 = makeItem(
             id: .init(), description: "any-description",
             location: "any-localtion",
-            imageURL: URL(string: "https://any-other-url.com")!)
+            image: URL(string: "https://any-other-url.com")!)
         
         expect(sut, completeWith: .success([item1.model, item2.model])) {
             let json = makeItemJSON([item1.json, item2.json])
@@ -126,19 +126,19 @@ final class RemoteFeedLoaderTests: XCTestCase {
     
     private func makeItem(
         id: UUID, description: String? = nil,
-        location: String? = nil, imageURL: URL
+        location: String? = nil, image: URL
     ) -> (
-        model: FeedItem, json: [String: Any]
+        model: FeedImage, json: [String: Any]
     ) {
-        let item = FeedItem(
+        let item = FeedImage(
             id: id, description: description,
-            location: location, imageURL: imageURL)
+            location: location, url: image)
         
         let json = [
             "id": id.uuidString,
             "description": description,
             "location": location,
-            "image": imageURL.absoluteString
+            "image": image.absoluteString
         ].reduce(into: [String: Any](), { (accumulate, element) in
             if let value = element.value {
                 accumulate[element.key] = value
