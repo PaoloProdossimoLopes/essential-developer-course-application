@@ -14,10 +14,15 @@ public final class LocalFeedLoader {
     }
     
     public func load(completion: @escaping ((LoadResult) -> Void)) {
-        store.retrieve { error in
-            if let error = error {
+        store.retrieve { [unowned self] result in
+            switch result {
+            case let .failure(error):
                 completion(.failure(error))
-            } else {
+                
+            case let .found(feed, timestamp) where self.validate(timestamp):
+                completion(.success(feed.toModel()))
+                
+            case .found, .empty:
                 completion(.success([]))
             }
         }
@@ -33,6 +38,15 @@ public final class LocalFeedLoader {
 
 //MARK: - Helpers
 private extension LocalFeedLoader {
+    
+    func validate(_ timestamp: Date) -> Bool {
+        let calendar = Calendar(identifier: .gregorian)
+        if let maxRangeCached = calendar.date(byAdding: .day, value: 7, to: timestamp) {
+            return timestamp < maxRangeCached
+        }
+        
+        return false
+    }
     
     func onDeleteCache(
         items: [FeedImage],
@@ -54,11 +68,20 @@ private extension LocalFeedLoader {
     }
 }
 
-extension Array where Element == FeedImage {
+private extension Array where Element == FeedImage {
     func toLocal() -> [LocalFeedImage] {
         map { LocalFeedImage(
             id: $0.id, description: $0.description,
             location: $0.location, url: $0.image
+        )}
+    }
+}
+
+private extension Array where Element == LocalFeedImage {
+    func toModel() -> [FeedImage] {
+        map { FeedImage(
+            id: $0.id, description: $0.description,
+            location: $0.location, url: $0.url
         )}
     }
 }
