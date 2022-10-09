@@ -42,7 +42,7 @@ private extension LocalFeedLoader {
     func validate(_ timestamp: Date) -> Bool {
         let calendar = Calendar(identifier: .gregorian)
         if let maxRangeCached = calendar.date(byAdding: .day, value: 7, to: timestamp) {
-            return timestamp < maxRangeCached
+            return currentDate() < maxRangeCached
         }
         
         return false
