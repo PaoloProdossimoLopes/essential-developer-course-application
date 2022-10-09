@@ -48,6 +48,10 @@ final class FeedStoreSpy: FeedStore {
         insertionCompletions[index](nil)
     }
     
+    func retrieveCompleteionWithEmptyCache(at index: Int = 0) {
+        retrieveCompletions[index](nil)
+    }
+    
     func retrieveCompleteion(with error: Error?, at index: Int = 0) {
         retrieveCompletions[index](error)
     }
