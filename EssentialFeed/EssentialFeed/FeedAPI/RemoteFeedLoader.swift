@@ -28,10 +28,10 @@ public final class RemoteFeedLoader: IFeedLoader {
         switch result {
         case let .success(data, response):
             completion(map(data, response))
-            break
+            
         case .failure:
             completion(.failure(RemoteFeedLoader.Error.noConectivity))
-            break
+            
         }
     }
     
