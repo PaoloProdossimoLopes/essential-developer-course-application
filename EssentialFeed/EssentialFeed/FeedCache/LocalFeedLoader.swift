@@ -36,9 +36,37 @@ private extension LocalFeedLoader {
     }
     
     func insertCache(_ items: [FeedItem], with completion: @escaping ((SaveResult) -> Void)) {
-        store.insertCache(items, timestamp: currentDate()) { [weak self] error in
+        store.insertCache(items.toLocal(), timestamp: currentDate()) { [weak self] error in
             guard self != nil else { return }
             completion(error)
         }
+    }
+}
+
+extension Array where Element == FeedItem {
+    func toLocal() -> [LocalFeedItem] {
+        map { LocalFeedItem(
+            id: $0.id, description: $0.description,
+            location: $0.location, imageURL: $0.imageURL
+        )}
+    }
+}
+
+public struct LocalFeedItem: Equatable {
+    public let id: UUID
+    public let description: String?
+    public let location: String?
+    public let imageURL: URL
+    
+    public init(
+        id: UUID,
+        description: String?,
+        location: String?,
+        imageURL: URL
+    ) {
+        self.id = id
+        self.description = description
+        self.location = location
+        self.imageURL = imageURL
     }
 }
