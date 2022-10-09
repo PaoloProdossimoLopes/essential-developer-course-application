@@ -1,3 +1,5 @@
+import Foundation
+
 public final class RemoteFeedLoader: IFeedLoader {
     
     private let client: HTTPClient

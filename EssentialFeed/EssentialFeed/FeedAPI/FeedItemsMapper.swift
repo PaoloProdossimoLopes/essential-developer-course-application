@@ -1,3 +1,5 @@
+import Foundation
+
 struct FeedItemsMapper {
     
     private struct Root: Decodable {
