@@ -51,6 +51,16 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
             store.completeRetrival(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
         })
     }
+    
+    func test_load_delieversNoImagesOnMoreThanSevenDaysOldCache() {
+        let feed = uniqueItems()
+        let currentDate = Date()
+        let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: -1)
+        let (sut, store) = makeSUT(currentDate: { currentDate })
+        expect(sut, loadCompletesWithTo: .success([]), when: {
+            store.completeRetrival(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+        })
+    }
 }
 
 //MARK: - Heleper
@@ -112,7 +122,8 @@ private extension Date {
         return calendar.date(byAdding: .day, value: days, to: self)!
     }
     
-    func adding(seconds: TimeInterval) -> Date {
-        return self + 1
+    func adding(seconds: Int) -> Date {
+        let calendar = Calendar(identifier: .gregorian)
+        return calendar.date(byAdding: .second, value: seconds, to: self)!
     }
 }
