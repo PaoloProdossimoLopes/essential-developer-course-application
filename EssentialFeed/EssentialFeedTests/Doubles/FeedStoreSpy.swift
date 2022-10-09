@@ -47,4 +47,8 @@ final class FeedStoreSpy: FeedStore {
     func completeInsertionSuccessfull(at index: Int = 0) {
         insertionCompletions[index](nil)
     }
+    
+    func retrieveCompleteion(with error: Error?, at index: Int = 0) {
+        retrieveCompletions[index](error)
+    }
 }
