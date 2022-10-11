@@ -84,12 +84,24 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
        let feed = uniqueItems()
         let fixedDate = Date()
         let timestamp = fixedDate.adding(days: -7).adding(seconds: 1)
-        let (sut, store) = makeSUT()
+        let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.load { _ in }
         store.completeRetrival(with: feed.local, timestamp: timestamp)
         
         XCTAssertEqual(store.recievedMessages, [.retrieve])
+    }
+    
+    func test_load_doesNotDeletionCacheOnSevenDaysOldCache() {
+       let feed = uniqueItems()
+        let fixedDate = Date()
+        let timestamp = fixedDate.adding(days: -7)
+        let (sut, store) = makeSUT(currentDate: { fixedDate })
+        
+        sut.load { _ in }
+        store.completeRetrival(with: feed.local, timestamp: timestamp)
+        
+        XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
     }
 }
 
