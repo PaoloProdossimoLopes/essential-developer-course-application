@@ -17,10 +17,10 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
     }
     
-    func test_validate_doesNotDeletionCacheOnSevenDaysOldCache() {
+    func test_validate_doesNotDeletionCacheOnExpirationDateCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
-        let timestamp = fixedDate.adding(days: -7)
+        let timestamp = fixedDate.minusExpirationDate()
         let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.validate()
@@ -29,10 +29,10 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
     }
     
-    func test_validate_doesNotDeletionCacheOnMoteThanSevenDaysOldCache() {
+    func test_validate_doesNotDeletionCacheOnMoreThanExperationDateCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
-        let timestamp = fixedDate.adding(days: -7).adding(seconds: -1)
+        let timestamp = fixedDate.minusExpirationDate().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.validate()

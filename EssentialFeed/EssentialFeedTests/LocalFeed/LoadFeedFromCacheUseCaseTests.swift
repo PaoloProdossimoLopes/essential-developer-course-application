@@ -32,33 +32,33 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         })
     }
     
-    func test_load_deleversChaceImageOnLessThanSevenDaysOldCache() {
+    func test_load_deleversChaceImageOnLessThanExpirationDatedCache() {
         let feed = uniqueItems()
         let currentDate = Date()
         let (sut, store) = makeSUT(currentDate: { currentDate })
-        let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: 1)
+        let noExpiredTimestamp = currentDate.minusExpirationDate().adding(seconds: 1)
         expect(sut, loadCompletesWithTo: .success(feed.models), when: {
-            store.completeRetrival(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+            store.completeRetrival(with: feed.local, timestamp: noExpiredTimestamp)
         })
     }
     
-    func test_load_deleversNoImagesOnSevenDaysOldCache() {
+    func test_load_deleversNoImagesOnExpirationDateCache() {
         let feed = uniqueItems()
         let currentDate = Date()
         let (sut, store) = makeSUT(currentDate: { currentDate })
-        let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7)
+        let expirationDate = currentDate.minusExpirationDate()
         expect(sut, loadCompletesWithTo: .success([]), when: {
-            store.completeRetrival(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+            store.completeRetrival(with: feed.local, timestamp: expirationDate)
         })
     }
     
-    func test_load_delieversNoImagesOnMoreThanSevenDaysOldCache() {
+    func test_load_delieversNoImagesOnMoreThanExpirationDateCache() {
         let feed = uniqueItems()
         let currentDate = Date()
-        let lessThanSevenDaysOldTimestamp = currentDate.adding(days: -7).adding(seconds: -1)
+        let expiredTimestamp = currentDate.minusExpirationDate().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { currentDate })
         expect(sut, loadCompletesWithTo: .success([]), when: {
-            store.completeRetrival(with: feed.local, timestamp: lessThanSevenDaysOldTimestamp)
+            store.completeRetrival(with: feed.local, timestamp: expiredTimestamp)
         })
     }
     
@@ -80,10 +80,10 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve])
     }
     
-    func test_load_doesNotDeletionCacheOnLessThanSevenDaysOld() {
+    func test_load_doesNotDeletionCacheOnLessThanExpirationDate() {
        let feed = uniqueItems()
         let fixedDate = Date()
-        let timestamp = fixedDate.adding(days: -7).adding(seconds: 1)
+        let timestamp = fixedDate.minusExpirationDate().adding(seconds: 1)
         let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.load { _ in }
@@ -92,10 +92,10 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve])
     }
     
-    func test_load_hasNoSideEffectCacheOnSevenDaysOldCache() {
+    func test_load_hasNoSideEffectCacheOnExpirationDateOldCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
-        let timestamp = fixedDate.adding(days: -7)
+        let timestamp = fixedDate.minusExpirationDate()
         let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.load { _ in }
@@ -104,10 +104,10 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve])
     }
     
-    func test_load_hasNoSideEffectCacheOnMoteThanSevenDaysOldCache() {
+    func test_load_hasNoSideEffectCacheOnMoteThanExpirationCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
-        let timestamp = fixedDate.adding(days: -7).adding(seconds: -1)
+        let timestamp = fixedDate.minusExpirationDate().adding(seconds: -1)
         let (sut, store) = makeSUT(currentDate: { fixedDate })
         
         sut.load { _ in }
@@ -184,7 +184,16 @@ private extension LoadFeedFromCacheUseCaseTests {
 }
 
 extension Date {
-    func adding(days: Int) -> Date {
+    
+    private var maxExpirationDays: Int {
+        return -7
+    }
+    
+    func minusExpirationDate() -> Date {
+        self.adding(days: maxExpirationDays)
+    }
+    
+    private func adding(days: Int) -> Date {
         let calendar = Calendar(identifier: .gregorian)
         return calendar.date(byAdding: .day, value: days, to: self)!
     }
