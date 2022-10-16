@@ -12,7 +12,9 @@ public final class LocalFeedLoader {
         self.store = store
         self.currentDate = currentDate
     }
-    
+}
+ 
+extension LocalFeedLoader {
     public func load(completion: @escaping ((LoadResult) -> Void)) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }
@@ -29,6 +31,9 @@ public final class LocalFeedLoader {
             }
         }
     }
+}
+
+extension LocalFeedLoader {
     
     public func save(_ items: [FeedImage], completion: @escaping ((SaveResult) -> Void)) {
         store.deleteCache { [weak self] error in
@@ -36,6 +41,10 @@ public final class LocalFeedLoader {
             self.onDeleteCache(items: items, recieved: error, with: completion)
         }
     }
+    
+}
+
+extension LocalFeedLoader {
     
     public func validate() {
         store.retrieve { [weak self] result in
