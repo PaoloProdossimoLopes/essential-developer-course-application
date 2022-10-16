@@ -6,7 +6,7 @@ public final class LocalFeedLoader {
     let currentDate: (() -> Date)
     
     public typealias SaveResult = Swift.Error?
-    public typealias LoadResult = FeedResult?
+    public typealias LoadResult = FeedResult
     
     public init(store: FeedStore, currentDate: @escaping (() -> Date)) {
         self.store = store
@@ -14,7 +14,8 @@ public final class LocalFeedLoader {
     }
 }
  
-extension LocalFeedLoader {
+//MARK: - IFeedLoader
+extension LocalFeedLoader: IFeedLoader {
     public func load(completion: @escaping ((LoadResult) -> Void)) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }

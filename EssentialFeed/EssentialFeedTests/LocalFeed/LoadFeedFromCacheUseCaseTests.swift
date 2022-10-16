@@ -173,7 +173,7 @@ private extension LoadFeedFromCacheUseCaseTests {
             case let (.failure(recievedError), .failure(expectedError)):
                 XCTAssertEqual(recievedError as NSError?, expectedError as NSError?, file: file, line: line)
             default:
-                XCTFail("Expectec \(expectedResult!) but got \(recievedResult!) intead", file: file, line: line)
+                XCTFail("Expectec \(expectedResult) but got \(recievedResult) intead", file: file, line: line)
             }
             expect.fulfill()
         }
