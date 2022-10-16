@@ -1,5 +1,18 @@
 import Foundation
 
+private enum FeedCachePolicy {
+    
+    static func validate(_ timestamp: Date, against date: Date) -> Bool {
+        let calendar = Calendar(identifier: .gregorian)
+        let maxExpiredDays = 7
+        if let maxRangeCached = calendar.date(byAdding: .day, value: maxExpiredDays, to: timestamp) {
+            return date < maxRangeCached
+        }
+        
+        return false
+    }
+}
+
 public final class LocalFeedLoader {
     
     let store: FeedStore
@@ -24,7 +37,7 @@ extension LocalFeedLoader: IFeedLoader {
             case let .failure(error):
                 completion(.failure(error))
                 
-            case let .found(feed, timestamp) where self.validate(timestamp):
+            case let .found(feed, timestamp) where FeedCachePolicy.validate(timestamp, against: self.currentDate()):
                 completion(.success(feed.toModel()))
                 
             case .found, .empty:
@@ -55,7 +68,7 @@ extension LocalFeedLoader {
             case .failure:
                 self.store.deleteCache { _ in }
                 
-            case let .found(_, timestamp) where !self.validate(timestamp):
+            case let .found(_, timestamp) where !FeedCachePolicy.validate(timestamp, against: self.currentDate()):
                 self.store.deleteCache { _ in }
                 
             case .empty, .found: break
@@ -67,15 +80,6 @@ extension LocalFeedLoader {
 
 //MARK: - Helpers
 private extension LocalFeedLoader {
-    
-    func validate(_ timestamp: Date) -> Bool {
-        let calendar = Calendar(identifier: .gregorian)
-        if let maxRangeCached = calendar.date(byAdding: .day, value: 7, to: timestamp) {
-            return currentDate() < maxRangeCached
-        }
-        
-        return false
-    }
     
     func onDeleteCache(
         items: [FeedImage],
