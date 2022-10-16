@@ -92,7 +92,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve])
     }
     
-    func test_load_doesNotHasSideEffectOnSevenDaysOldCache() {
+    func test_load_hasNoSideEffectCacheOnSevenDaysOldCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
         let timestamp = fixedDate.adding(days: -7)
@@ -104,7 +104,7 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.recievedMessages, [.retrieve])
     }
     
-    func test_load_doesNotHasNoSideEffectCacheOnMoteThanSevenDaysOldCache() {
+    func test_load_hasNoSideEffectCacheOnMoteThanSevenDaysOldCache() {
        let feed = uniqueItems()
         let fixedDate = Date()
         let timestamp = fixedDate.adding(days: -7).adding(seconds: -1)
@@ -183,7 +183,7 @@ private extension LoadFeedFromCacheUseCaseTests {
     }
 }
 
-private extension Date {
+extension Date {
     func adding(days: Int) -> Date {
         let calendar = Calendar(identifier: .gregorian)
         return calendar.date(byAdding: .day, value: days, to: self)!

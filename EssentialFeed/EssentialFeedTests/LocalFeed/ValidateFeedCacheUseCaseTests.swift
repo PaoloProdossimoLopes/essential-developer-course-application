@@ -16,6 +16,30 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         
         XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
     }
+    
+    func test_validate_doesNotDeletionCacheOnSevenDaysOldCache() {
+       let feed = uniqueItems()
+        let fixedDate = Date()
+        let timestamp = fixedDate.adding(days: -7)
+        let (sut, store) = makeSUT(currentDate: { fixedDate })
+        
+        sut.validate()
+        store.completeRetrival(with: feed.local, timestamp: timestamp)
+        
+        XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
+    }
+    
+    func test_validate_doesNotDeletionCacheOnMoteThanSevenDaysOldCache() {
+       let feed = uniqueItems()
+        let fixedDate = Date()
+        let timestamp = fixedDate.adding(days: -7).adding(seconds: -1)
+        let (sut, store) = makeSUT(currentDate: { fixedDate })
+        
+        sut.validate()
+        store.completeRetrival(with: feed.local, timestamp: timestamp)
+        
+        XCTAssertEqual(store.recievedMessages, [.retrieve, .deleteCache])
+    }
 }
 
 //MARK: - Helpers
@@ -35,5 +59,18 @@ private extension ValidateFeedCacheUseCaseTests {
         checkMemoryLeak(store, file: file, line: line)
         
         return (sut, store)
+    }
+    
+    func uniqueItem() -> FeedImage {
+        .init(
+            id: .init(), description: "any-description",
+            location: "any-location", url: URL(string: "https://any-url.com")!
+        )
+    }
+    
+    func uniqueItems() -> (models: [FeedImage], local: [LocalFeedImage]) {
+        let model = uniqueItem().asList
+        let lcoal = model.map { LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.image) }
+        return (model, lcoal)
     }
 }
