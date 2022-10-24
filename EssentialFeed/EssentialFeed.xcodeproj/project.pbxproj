@@ -34,6 +34,7 @@
 		B11D55AA28E3C4210046A4CA /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55A928E3C4210046A4CA /* HTTPClient.swift */; };
 		B11D55AC28E4EA250046A4CA /* HTTPClientResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55AB28E4EA250046A4CA /* HTTPClientResult.swift */; };
 		B11D55AE28E667640046A4CA /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D55AD28E667640046A4CA /* FeedItemsMapper.swift */; };
+		B13002A729074B4F0061F2FE /* CodableFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13002A629074B4F0061F2FE /* CodableFeedStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		B11D55A928E3C4210046A4CA /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		B11D55AB28E4EA250046A4CA /* HTTPClientResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientResult.swift; sourceTree = "<group>"; };
 		B11D55AD28E667640046A4CA /* FeedItemsMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapper.swift; sourceTree = "<group>"; };
+		B13002A629074B4F0061F2FE /* CodableFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				B113607528F206C400493703 /* CacheFeedUseCaseTest.swift */,
 				B113608228F318BD00493703 /* LoadFeedFromCacheUseCaseTests.swift */,
+				B13002A629074B4F0061F2FE /* CodableFeedStoreTests.swift */,
 				B113613128FB7A3300493703 /* ValidateFeedCacheUseCaseTests.swift */,
 			);
 			path = LocalFeed;
@@ -398,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B13002A729074B4F0061F2FE /* CodableFeedStoreTests.swift in Sources */,
 				B11D55A528E3BC2E0046A4CA /* RemoteFeedLoaderTests.swift in Sources */,
 				B113613228FB7A3300493703 /* ValidateFeedCacheUseCaseTests.swift in Sources */,
 				B113605E28E9068A00493703 /* URLSessionHTTPClientTests.swift in Sources */,
