@@ -65,6 +65,17 @@ final class FeedImageCell: UITableViewCell {
     @IBOutlet private(set) var feedImageView: UIImageView!
     @IBOutlet private(set) var descriptionLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        feedImageView.alpha = 0
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        feedImageView.alpha = 0
+    }
+    
     func configure(with model: FeedImageViewModel) {
         locationLabel.text = model.location
         locationContainer.isHidden = model.location == nil
@@ -72,6 +83,13 @@ final class FeedImageCell: UITableViewCell {
         descriptionLabel.text = model.description
         descriptionLabel.isHidden = model.description == nil
         
-        feedImageView.image = UIImage(named: model.imageName)
+        fade(in: UIImage(named: model.imageName))
+    }
+    
+    private func fade(in image: UIImage?) {
+        feedImageView.image = image
+        UIView.animate(withDuration: 0.3, delay: 0.3) {
+            self.feedImageView.alpha = 1
+        }
     }
 }
