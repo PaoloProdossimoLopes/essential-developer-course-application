@@ -10,13 +10,13 @@
         <!--MyFeed-->
         <scene sceneID="DQQ-Kf-U9F">
             <objects>
-                <tableViewController id="ckT-AU-gjc" sceneMemberID="viewController">
+                <tableViewController id="ckT-AU-gjc" customClass="FeedViewController" customModule="EssentialFeedPrototype" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="iKL-h6-Mji">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="580" id="dYY-vK-kKF">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="FeedImageCell" rowHeight="580" id="dYY-vK-kKF" customClass="FeedImageCell" customModule="EssentialFeedPrototype" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="390" height="580"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dYY-vK-kKF" id="5uZ-ei-1gI">
@@ -83,6 +83,12 @@
                                         <constraint firstAttribute="bottomMargin" secondItem="v8S-he-VXv" secondAttribute="bottom" priority="999" id="z1w-QN-AY1"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="Teo-hJ-s14" id="AQo-IE-Oe0"/>
+                                    <outlet property="feedImageView" destination="6SI-6w-X7g" id="eMP-YL-dgL"/>
+                                    <outlet property="locationContainer" destination="Y6F-Mk-Als" id="1y8-jf-Ml0"/>
+                                    <outlet property="locationLabel" destination="lMl-CW-CjV" id="3y5-YH-gzf"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
