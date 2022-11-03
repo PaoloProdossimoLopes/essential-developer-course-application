@@ -17,7 +17,6 @@ final class EssentialFeedController: UITableViewController {
         
         refreshControl = .init()
         refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
-        refreshControl?.beginRefreshing()
         
         loadFeed()
     }
@@ -28,6 +27,7 @@ final class EssentialFeedController: UITableViewController {
     
     //MARK: - Helpers
     private func loadFeed() {
+        refreshControl?.beginRefreshing()
         loader?.load { [weak self] _ in
             self?.refreshControl?.endRefreshing()
         }
@@ -36,55 +36,42 @@ final class EssentialFeedController: UITableViewController {
 
 final class EssentialFeedControllerTests: XCTestCase {
 
-    func test_init_doesNotLoadFeed() {
-        let (_, loader) = makeEnviroment()
-        XCTAssertEqual(loader.loadCallCount, 0)
-    }
-    
-    func test_viewDidLoad_loadsFeed() {
+    func test_loadFeedActions_requestFeedToLoad() {
         let (sut, loader) = makeEnviroment()
+        XCTAssertEqual(loader.loadCallCount, 0, "Expected no loading requests before view is loading")
+        
         sut.simulateViewDidLoad()
-        XCTAssertEqual(loader.loadCallCount, 1)
-    }
-    
-    func test_simulateViewDidLoad_loadsFeed() {
-        let (sut, loader) = makeEnviroment()
-        sut.simulateViewDidLoad()
+        XCTAssertEqual(loader.loadCallCount, 1, "Expected a loading request once view is loaded")
         
         sut.userInitiateLoadFeed()
-        XCTAssertEqual(loader.loadCallCount, 2)
+        XCTAssertEqual(loader.loadCallCount, 2, "Expected another loading request once user")
         
         sut.userInitiateLoadFeed()
-        XCTAssertEqual(loader.loadCallCount, 3)
+        XCTAssertEqual(loader.loadCallCount, 3, "Expected a third loading request once user initiates another loader")
         
         sut.userInitiateLoadFeed()
-        XCTAssertEqual(loader.loadCallCount, 4)
+        XCTAssertEqual(loader.loadCallCount, 4, "Expeceted a thir loading request once user initiates another load")
     }
     
     func test_viewDidLoad_showsLoadingIndicator() {
-        let (sut, _) = makeEnviroment()
-        sut.simulateViewDidLoad()
-        
-        XCTAssertTrue(sut.indicatorIsVisible)
-    }
-    
-    func test_simulateViewDidLoad_showsLoadingIndicator() {
-        let (sut, _) = makeEnviroment()
-        sut.simulateViewDidLoad()
-        
-        sut.userInitiateLoadFeed()
-        
-        XCTAssertTrue(sut.indicatorIsVisible)
-    }
-    
-    func test_viewDidLoad_hidesIndicatorOnLoaderCompletion() {
         let (sut, loader) = makeEnviroment()
+        
         sut.simulateViewDidLoad()
+        XCTAssertTrue(sut.indicatorIsVisible, "Expected loadinf indicator once view is loaded")
         
         sut.userInitiateLoadFeed()
-        loader.completes()
+        XCTAssertTrue(sut.indicatorIsVisible, "Expected loading indicator once user initiates a reload")
         
-        XCTAssertFalse(sut.indicatorIsVisible)
+        sut.userInitiateLoadFeed()
+        loader.completes(at: 0)
+        XCTAssertFalse(sut.indicatorIsVisible, "Expected no loading indicator once loading is completed")
+        
+        sut.userInitiateLoadFeed()
+        XCTAssertTrue(sut.indicatorIsVisible, "Expected loading indicator once user initiates a reload")
+        
+        sut.userInitiateLoadFeed()
+        loader.completes(at: 1)
+        XCTAssertFalse(sut.indicatorIsVisible, "Expected no loading indicator once loading is completed")
     }
 }
 
@@ -118,8 +105,8 @@ private extension EssentialFeedControllerTests {
             completions.append(completion)
         }
         
-        func completes() {
-            completions[0](.success([]))
+        func completes(at index: Int = 0) {
+            completions[index](.success([]))
         }
     }
 }
