@@ -17,6 +17,7 @@ final class EssentialFeedController: UITableViewController {
         
         refreshControl = .init()
         refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
+        refreshControl?.beginRefreshing()
         
         loadFeed()
     }
@@ -40,17 +41,31 @@ final class EssentialFeedControllerTests: XCTestCase {
     
     func test_viewDidLoad_loadsFeed() {
         let (sut, loader) = makeEnviroment()
-        sut.loadViewIfNeeded()
+        sut.simulateViewDidLoad()
         XCTAssertEqual(loader.loadCallCount, 1)
     }
     
     func test_pullToRefresh_loadsFeed() {
         let (sut, loader) = makeEnviroment()
-        sut.loadViewIfNeeded()
+        sut.simulateViewDidLoad()
+        
+        sut.refreshControl?.simulatePullToRefresh()
+        XCTAssertEqual(loader.loadCallCount, 2)
+        
+        sut.refreshControl?.simulatePullToRefresh()
+        XCTAssertEqual(loader.loadCallCount, 3)
+        
+        sut.refreshControl?.simulatePullToRefresh()
+        XCTAssertEqual(loader.loadCallCount, 4)
+    }
+    
+    func test_viewDidLoad_showsLoadingIndicator() {
+        let (sut, _) = makeEnviroment()
+        sut.simulateViewDidLoad()
         
         sut.refreshControl?.simulatePullToRefresh()
         
-        XCTAssertEqual(loader.loadCallCount, 2)
+        XCTAssertTrue(sut.refreshControl!.isRefreshing)
     }
 }
 
@@ -79,6 +94,13 @@ private extension EssentialFeedControllerTests {
         func load(completion: @escaping ((FeedResult) -> Void)) {
             loadCallCount += 1
         }
+    }
+}
+
+//MARK: - SD
+private extension UIViewController {
+    func simulateViewDidLoad() {
+        loadViewIfNeeded()
     }
 }
 
