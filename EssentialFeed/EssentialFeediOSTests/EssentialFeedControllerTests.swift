@@ -28,7 +28,9 @@ final class EssentialFeedController: UITableViewController {
     
     //MARK: - Helpers
     private func loadFeed() {
-        loader?.load { _ in }
+        loader?.load { [weak self] _ in
+            self?.refreshControl?.endRefreshing()
+        }
     }
 }
 
@@ -67,6 +69,16 @@ final class EssentialFeedControllerTests: XCTestCase {
         
         XCTAssertTrue(sut.refreshControl!.isRefreshing)
     }
+    
+    func test_viewDidLoad_hidesIndicatorOnLoaderCompletion() {
+        let (sut, loader) = makeEnviroment()
+        sut.simulateViewDidLoad()
+        
+        sut.refreshControl?.simulatePullToRefresh()
+        loader.completes()
+        
+        XCTAssertFalse(sut.refreshControl!.isRefreshing)
+    }
 }
 
 //MARK: - Helpers
@@ -89,10 +101,18 @@ private extension EssentialFeedControllerTests {
 private extension EssentialFeedControllerTests {
     
     final class LoaderSpy: IFeedLoader {
-        private(set) var loadCallCount = 0
+        private var completions = [((FeedResult) -> Void)]()
+        
+        var loadCallCount: Int {
+            completions.count
+        }
         
         func load(completion: @escaping ((FeedResult) -> Void)) {
-            loadCallCount += 1
+            completions.append(completion)
+        }
+        
+        func completes() {
+            completions[0](.success([]))
         }
     }
 }
