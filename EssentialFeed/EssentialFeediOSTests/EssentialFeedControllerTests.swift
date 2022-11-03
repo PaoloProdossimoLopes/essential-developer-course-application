@@ -47,17 +47,17 @@ final class EssentialFeedControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCount, 1)
     }
     
-    func test_pullToRefresh_loadsFeed() {
+    func test_simulateViewDidLoad_loadsFeed() {
         let (sut, loader) = makeEnviroment()
         sut.simulateViewDidLoad()
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.userInitiateLoadFeed()
         XCTAssertEqual(loader.loadCallCount, 2)
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.userInitiateLoadFeed()
         XCTAssertEqual(loader.loadCallCount, 3)
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.userInitiateLoadFeed()
         XCTAssertEqual(loader.loadCallCount, 4)
     }
     
@@ -65,19 +65,26 @@ final class EssentialFeedControllerTests: XCTestCase {
         let (sut, _) = makeEnviroment()
         sut.simulateViewDidLoad()
         
-        sut.refreshControl?.simulatePullToRefresh()
+        XCTAssertTrue(sut.indicatorIsVisible)
+    }
+    
+    func test_simulateViewDidLoad_showsLoadingIndicator() {
+        let (sut, _) = makeEnviroment()
+        sut.simulateViewDidLoad()
         
-        XCTAssertTrue(sut.refreshControl!.isRefreshing)
+        sut.userInitiateLoadFeed()
+        
+        XCTAssertTrue(sut.indicatorIsVisible)
     }
     
     func test_viewDidLoad_hidesIndicatorOnLoaderCompletion() {
         let (sut, loader) = makeEnviroment()
         sut.simulateViewDidLoad()
         
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.userInitiateLoadFeed()
         loader.completes()
         
-        XCTAssertFalse(sut.refreshControl!.isRefreshing)
+        XCTAssertFalse(sut.indicatorIsVisible)
     }
 }
 
@@ -117,7 +124,15 @@ private extension EssentialFeedControllerTests {
     }
 }
 
-//MARK: - SD
+//MARK: - DSL
+private extension EssentialFeedController {
+    func userInitiateLoadFeed() {
+        refreshControl?.simulatePullToRefresh()
+    }
+    
+    var indicatorIsVisible: Bool { refreshControl?.isRefreshing == true }
+}
+
 private extension UIViewController {
     func simulateViewDidLoad() {
         loadViewIfNeeded()
