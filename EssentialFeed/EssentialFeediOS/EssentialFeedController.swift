@@ -1,16 +1,24 @@
 import UIKit
 import EssentialFeed
 
+public protocol FeedImageDataLoader {
+    func loadImageData(from url: URL)
+    func cancelImageDataLoader(from url: URL)
+}
+
 final class EssentialFeedController: UITableViewController {
     
     //MARK: - Properites
-    private var loader: IFeedLoader?
+    private var feedLoader: IFeedLoader?
+    private var imageLoader: FeedImageDataLoader?
+    
     private var tableModels = [FeedImage]()
     
     //MARK: - Initializer
-    convenience init(loader: IFeedLoader) {
+    convenience init(feedLoader: IFeedLoader, imageLoader: FeedImageDataLoader) {
         self.init()
-        self.loader = loader
+        self.feedLoader = feedLoader
+        self.imageLoader = imageLoader
     }
     
     //MARK: - Lifecycle
@@ -35,13 +43,19 @@ final class EssentialFeedController: UITableViewController {
         cell.descriptionLabel.text = model.description
         cell.localtionLabel.text = model.location
         cell.localtionContainer.isHidden = (model.location == nil)
+        imageLoader?.loadImageData(from: model.image)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let model = tableModels[indexPath.row]
+        imageLoader?.cancelImageDataLoader(from: model.image)
     }
     
     //MARK: - Helpers
     private func loadFeed() {
         refreshControl?.beginRefreshing()
-        loader?.load { [weak self] result in
+        feedLoader?.load { [weak self] result in
             
             if case let .success(model) = result {
                 self?.tableModels = model

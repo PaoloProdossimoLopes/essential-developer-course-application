@@ -77,6 +77,39 @@ final class EssentialFeedControllerTests: XCTestCase {
         loader.completeFeedLoadingWithError(at: 1)
         assertThat(sut, isRendering: [image])
     }
+    
+    func test_feedImageView_loadsImageURLWhenVisible() {
+        let image0 = makeImage(url: URL(string:"http://url-0.com")!)
+        let image1 = makeImage(url: URL(string:"http://url-1.com")!)
+        let (sut, feedLoader, imageLoader) = makeEnviroment()
+        
+        sut.loadViewIfNeeded()
+        feedLoader.completes(with: [image0, image1])
+        
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [], "Expected no images URL requests until view became visible")
+        
+        sut.simulateFeedImageViewVisible(at: 0)
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image], "Expeceted first iamge URL request once first view becames visible")
+        
+        sut.simulateFeedImageViewVisible(at: 1)
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image], "Expeceted second iamge URL request once first view becames visible")
+    }
+    
+    func test_feedImageView_cancelsImage_loadingWhenNotVisibleAnymore() {
+        let image0 = makeImage(url: URL(string:"http://url-0.com")!)
+        let image1 = makeImage(url: URL(string:"http://url-1.com")!)
+        let (sut, feedLoader, imageLoader) = makeEnviroment()
+        
+        sut.loadViewIfNeeded()
+        feedLoader.completes(with: [image0, image1])
+        XCTAssertEqual(imageLoader.recievedCancelURLs, [], "Expected no images URL requests until view became visible")
+        
+        sut.simulateFeedImageViewNotVisible(at: 0)
+        XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image], "Expeceted first iamge URL request once first view becames visible")
+        
+        sut.simulateFeedImageViewNotVisible(at: 1)
+        XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image, image1.image], "Expeceted second iamge URL request once first view becames visible")
+    }
 }
 
 //MARK: - Helpers
@@ -84,14 +117,29 @@ private extension EssentialFeedControllerTests {
     func makeEnviroment(
         file: StaticString = #filePath,
         line: UInt = #line
-    ) -> (sut: EssentialFeedController, loader: LoaderSpy) {
-        let loader = LoaderSpy()
-        let sut = EssentialFeedController(loader: loader)
+    ) -> (sut: EssentialFeedController, loader: FeedLoaderSpy) {
+        let feedLoader = FeedLoaderSpy()
+        let feedImageLoader = FeedImageDataLoaderSpy()
+        let sut = EssentialFeedController(feedLoader: feedLoader, imageLoader: feedImageLoader)
         
         checkMemoryLeak(sut, file: file, line: line)
-        checkMemoryLeak(loader, file: file, line: line)
+        checkMemoryLeak(feedLoader, file: file, line: line)
         
-        return (sut, loader)
+        return (sut, feedLoader)
+    }
+    
+    func makeEnviroment(
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> (sut: EssentialFeedController, loader: FeedLoaderSpy, imageLoader: FeedImageDataLoaderSpy) {
+        let feedLoader = FeedLoaderSpy()
+        let feedImageLoader = FeedImageDataLoaderSpy()
+        let sut = EssentialFeedController(feedLoader: feedLoader, imageLoader: feedImageLoader)
+        
+        checkMemoryLeak(sut, file: file, line: line)
+        checkMemoryLeak(feedLoader, file: file, line: line)
+        
+        return (sut, feedLoader, feedImageLoader)
     }
     
     func makeImage(description: String? = nil, localtion: String? = nil, url: URL = URL(string: "http://any-url.com")!) -> FeedImage {
@@ -127,7 +175,21 @@ private extension EssentialFeedControllerTests {
 //MARK: - Doubles
 private extension EssentialFeedControllerTests {
     
-    final class LoaderSpy: IFeedLoader {
+    final class FeedImageDataLoaderSpy: FeedImageDataLoader {
+        
+        private(set) var recievedLoadURLs = [URL]()
+        private(set) var recievedCancelURLs = [URL]()
+        
+        func loadImageData(from url: URL) {
+            recievedLoadURLs.append(url)
+        }
+        
+        func cancelImageDataLoader(from url: URL) {
+            recievedCancelURLs.append(url)
+        }
+    }
+    
+    final class FeedLoaderSpy: IFeedLoader {
         private var completions = [((FeedResult) -> Void)]()
         
         var loadCallCount: Int {
@@ -165,6 +227,19 @@ private extension EssentialFeedController {
         let dataSource = tableView.dataSource
         let index = IndexPath(row: row, section: feedImagesSection)
         return dataSource?.tableView(tableView, cellForRowAt: index)
+    }
+    
+    @discardableResult
+    func simulateFeedImageViewVisible(at index: Int) -> FeedImageCell? {
+        return feedImageView(at: index) as? FeedImageCell
+    }
+    
+    func simulateFeedImageViewNotVisible(at row: Int) {
+        let view = simulateFeedImageViewVisible(at: row)
+        
+        let delegate = tableView.delegate
+        let index = IndexPath(row: row, section: feedImagesSection)
+        delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
     }
     
     private var feedImagesSection: Int {
