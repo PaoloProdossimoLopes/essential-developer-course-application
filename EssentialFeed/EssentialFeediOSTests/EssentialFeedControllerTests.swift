@@ -177,15 +177,19 @@ private extension EssentialFeedControllerTests {
     
     final class FeedImageDataLoaderSpy: FeedImageDataLoader {
         
+        struct TaskSpy: FeedImageDataLoaderTask {
+            let cancelCallback: (() -> Void)
+            func cancel() {
+                cancelCallback()
+            }
+        }
+        
         private(set) var recievedLoadURLs = [URL]()
         private(set) var recievedCancelURLs = [URL]()
         
-        func loadImageData(from url: URL) {
+        func loadImageData(from url: URL) -> FeedImageDataLoaderTask {
             recievedLoadURLs.append(url)
-        }
-        
-        func cancelImageDataLoader(from url: URL) {
-            recievedCancelURLs.append(url)
+            return TaskSpy { [weak self] in self?.recievedCancelURLs.append(url) }
         }
     }
     
