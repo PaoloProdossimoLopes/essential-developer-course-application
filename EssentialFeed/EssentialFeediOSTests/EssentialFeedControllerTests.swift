@@ -186,6 +186,61 @@ final class EssentialFeedControllerTests: XCTestCase {
         imageLoader.completeImageLoading(with: invalidImageData, at: 0)
         XCTAssertEqual(view?.isShowingRetryAction, true, "Expected retry action onde image loading completes with invalid image data")
     }
+    
+    func test_feedImageViewRetryAction_retriesImageLoad() {
+        let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+        let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+        let (sut, feedLoader, imageLoader) = makeEnviroment()
+        
+        sut.loadViewIfNeeded()
+        feedLoader.completes(with: [image0, image1])
+        
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image], "Expected two image URL request for the two visible views")
+        
+        imageLoader.completeImageLoadingWithError(at: 0)
+        imageLoader.completeImageLoadingWithError(at: 1)
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image], "Expected only two image URL requests before retry action")
+        
+        view0?.simulateRetryAction()
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image, image0.image], "Expected third imageURL request after first view retry action")
+        
+        view1?.simulateRetryAction()
+        XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image, image1.image, image0.image, image1.url], "Expected fourth imageURL request after second view retry action")
+        }
+
+        func test_feedImageView_preloadsImageURLWhenNearVisible() {
+            let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+            let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+            let (sut, feedLoader, imageLoader) = makeEnviroment()
+
+            sut.loadViewIfNeeded()
+            feedLoader.completes(with: [image0, image1])
+            XCTAssertEqual(imageLoader.recievedLoadURLs, [], "Expected no image URL requests until image is near visible")
+
+            sut.simulateFeedImageViewNearVisible(at: 0)
+            XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image], "Expected first image URL request once first image is near visible")
+
+            sut.simulateFeedImageViewNearVisible(at: 1)
+            XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image], "Expected second image URL request once second image is near visible")
+        }
+
+        func test_feedImageView_cancelsImageURLPreloadingWhenNotNearVisibleAnymore() {
+            let image0 = makeImage(url: URL(string: "http://url-0.com")!)
+            let image1 = makeImage(url: URL(string: "http://url-1.com")!)
+            let (sut, feedLoader, imageLoader) = makeEnviroment()
+
+            sut.loadViewIfNeeded()
+            feedLoader.completes(with: [image0, image1])
+            XCTAssertEqual(imageLoader.recievedCancelURLs, [], "Expected no cancelled image URL requests until image is not near visible")
+
+            sut.simulateFeedImageViewNotNearVisible(at: 0)
+            XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image], "Expected first cancelled image URL request once first image is not near visible anymore")
+
+            sut.simulateFeedImageViewNotNearVisible(at: 1)
+            XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image, image1.image], "Expected second cancelled image URL request once second image is not near visible anymore")
+        }
 }
 
 //MARK: - Helpers
@@ -365,6 +420,10 @@ private extension FeedImageCell {
     var isShowingRetryAction: Bool {
         return !feedImageRetryButton.isHidden
     }
+    
+    func simulateRetryAction() {
+        feedImageRetryButton.simulateTap()
+    }
 }
 
 private extension UIViewController {
@@ -387,6 +446,12 @@ private extension UIControl {
                 object.perform(Selector($0))
             }
         }
+    }
+}
+
+private extension UIButton {
+    func simulateTap() {
+        simulate(.touchUpInside)
     }
 }
 
