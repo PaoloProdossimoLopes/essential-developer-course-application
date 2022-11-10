@@ -207,7 +207,7 @@ final class EssentialFeedControllerTests: XCTestCase {
         XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image, image0.image], "Expected third imageURL request after first view retry action")
         
         view1?.simulateRetryAction()
-        XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image, image1.image, image0.image, image1.url], "Expected fourth imageURL request after second view retry action")
+        XCTAssertEqual(imageLoader.recievedLoadURLs, [image0.image, image1.image, image0.image, image1.image], "Expected fourth imageURL request after second view retry action")
         }
 
         func test_feedImageView_preloadsImageURLWhenNearVisible() {
@@ -393,6 +393,20 @@ private extension EssentialFeedController {
     
     private var feedImagesSection: Int {
         return 0
+    }
+    
+    func simulateFeedImageViewNearVisible(at row: Int) {
+        let preFetchDataSource = tableView.prefetchDataSource
+        let index = IndexPath(row: row, section: feedImagesSection)
+        preFetchDataSource?.tableView(tableView, prefetchRowsAt: [index])
+    }
+    
+    func simulateFeedImageViewNotNearVisible(at row: Int) {
+        simulateFeedImageViewNearVisible(at: row)
+        
+        let prefetchDataSource = tableView.prefetchDataSource
+        let index = IndexPath(row: row, section: feedImagesSection)
+        prefetchDataSource?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
 }
 
