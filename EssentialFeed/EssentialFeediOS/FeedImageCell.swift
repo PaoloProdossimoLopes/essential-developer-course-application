@@ -9,6 +9,7 @@ import UIKit
 
 final class FeedImageCell: UITableViewCell {
     public lazy var imageContainer = UIView()
+    public lazy var feedImageView = UIImageView()
     public lazy var localtionContainer = UIView()
     public lazy var descriptionLabel = UILabel()
     public lazy var localtionLabel = UILabel()

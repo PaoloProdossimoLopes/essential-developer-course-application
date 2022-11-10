@@ -48,8 +48,11 @@ final class EssentialFeedController: UITableViewController {
         cell.descriptionLabel.text = model.description
         cell.localtionLabel.text = model.location
         cell.localtionContainer.isHidden = (model.location == nil)
+        cell.feedImageView.image = nil
         cell.imageContainer.startShimmer()
         tasks[indexPath] = imageLoader?.loadImageData(from: model.image) { [weak cell] result in
+            let data = try? result.get()
+            cell?.feedImageView.image = data.map(UIImage.init) ?? nil
             cell?.imageContainer.stopShimmering()
         }
         return cell
