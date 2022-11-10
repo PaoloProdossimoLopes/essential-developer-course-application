@@ -42,6 +42,7 @@
 		B18223E2291C887400BC6F59 /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B11D558328E3B2AF0046A4CA /* EssentialFeed.framework */; platformFilter = ios; };
 		B18223E3291C887400BC6F59 /* EssentialFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B11D558328E3B2AF0046A4CA /* EssentialFeed.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B18223E8291C8BD300BC6F59 /* FeedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223E7291C8BD300BC6F59 /* FeedImageCell.swift */; };
+		B18223EA291D428800BC6F59 /* UIView+Shimmering.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223E9291D428800BC6F59 /* UIView+Shimmering.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		B18223D5291363BA00BC6F59 /* EssentialFeedControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedControllerTests.swift; sourceTree = "<group>"; };
 		B18223DF2913E5C500BC6F59 /* EssentialFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EssentialFeedController.swift; sourceTree = "<group>"; };
 		B18223E7291C8BD300BC6F59 /* FeedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCell.swift; sourceTree = "<group>"; };
+		B18223E9291D428800BC6F59 /* UIView+Shimmering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Shimmering.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +301,7 @@
 			children = (
 				B18223CA291363B900BC6F59 /* EssentialFeediOS.docc */,
 				B18223DF2913E5C500BC6F59 /* EssentialFeedController.swift */,
+				B18223E9291D428800BC6F59 /* UIView+Shimmering.swift */,
 				B18223E7291C8BD300BC6F59 /* FeedImageCell.swift */,
 			);
 			path = EssentialFeediOS;
@@ -570,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B18223E02913E5C500BC6F59 /* EssentialFeedController.swift in Sources */,
+				B18223EA291D428800BC6F59 /* UIView+Shimmering.swift in Sources */,
 				B18223E8291C8BD300BC6F59 /* FeedImageCell.swift in Sources */,
 				B18223CB291363BA00BC6F59 /* EssentialFeediOS.docc in Sources */,
 			);
