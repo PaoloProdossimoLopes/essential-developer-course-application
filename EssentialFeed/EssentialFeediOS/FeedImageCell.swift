@@ -13,4 +13,5 @@ final class FeedImageCell: UITableViewCell {
     public lazy var localtionContainer = UIView()
     public lazy var descriptionLabel = UILabel()
     public lazy var localtionLabel = UILabel()
+    public lazy var feedImageRetryButton = UIButton()
 }
