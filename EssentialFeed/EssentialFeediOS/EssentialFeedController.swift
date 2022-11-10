@@ -42,7 +42,12 @@ final class EssentialFeedController: UITableViewController {
     private func loadFeed() {
         refreshControl?.beginRefreshing()
         loader?.load { [weak self] result in
-            self?.tableModels = (try? result.get()) ?? []
+            
+            if case let .success(model) = result {
+                self?.tableModels = model
+                self?.tableView.reloadData()
+            }
+            
             self?.refreshControl?.endRefreshing()
         }
     }

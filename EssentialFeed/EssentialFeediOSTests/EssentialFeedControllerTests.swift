@@ -40,6 +40,9 @@ final class EssentialFeedControllerTests: XCTestCase {
         sut.userInitiateLoadFeed()
         loader.completes(at: 1)
         XCTAssertFalse(sut.indicatorIsVisible, "Expected no loading indicator once loading is completed")
+        
+        loader.completeFeedLoadingWithError(at: 1)
+        XCTAssertFalse(sut.indicatorIsVisible, "Expected no loading indicator once loading is completed with error")
     }
     
     func test_loadFeedCompletion_renderSuccessfullyLoadedFeed() {
@@ -60,6 +63,19 @@ final class EssentialFeedControllerTests: XCTestCase {
         rendeded = [image0, image1, image2, image3]
         loader.completes(with: rendeded, at: 0)
         assertThat(sut, isRendering: rendeded)
+    }
+    
+    func test_loadFeedCompletion_doesNotAlterCurrentRendeingStateOnError() {
+        let image = makeImage()
+        let (sut, loader) = makeEnviroment()
+        
+        sut.loadViewIfNeeded()
+        loader.completes(with: [image])
+        assertThat(sut, hasViewConfiguredFor: image, at: 0)
+        
+        sut.userInitiateLoadFeed()
+        loader.completeFeedLoadingWithError(at: 1)
+        assertThat(sut, isRendering: [image])
     }
 }
 
@@ -124,6 +140,11 @@ private extension EssentialFeedControllerTests {
         
         func completes(with model: [FeedImage] = [], at index: Int = 0) {
             completions[index](.success(model))
+        }
+        
+        func completeFeedLoadingWithError(at index: Int = 0) {
+            let error = NSError(domain: "any_domain", code: 0)
+            completions[index](.failure(error))
         }
     }
 }
