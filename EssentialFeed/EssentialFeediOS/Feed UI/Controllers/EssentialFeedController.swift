@@ -7,8 +7,7 @@ final class EssentialFeedController: UITableViewController {
     private var refreshController: FeedRefreshViewController?
     private var imageLoader: FeedImageDataLoader?
     
-    
-    private var tasks = [IndexPath: FeedImageDataLoaderTask]()
+    private var cellsController = [IndexPath: FeedImageCellController]()
     private var tableModels = [FeedImage]() {
         didSet { tableView.reloadData() }
     }
@@ -41,40 +40,25 @@ final class EssentialFeedController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model = tableModels[indexPath.row]
-        let cell = FeedImageCell()
-        cell.descriptionLabel.text = model.description
-        cell.localtionLabel.text = model.location
-        cell.localtionContainer.isHidden = (model.location == nil)
-        cell.feedImageRetryButton.isHidden = true
-        cell.feedImageView.image = nil
-        cell.imageContainer.startShimmer()
-        
-        let loadImage = { [weak self, weak cell] in
-            guard let self = self else { return }
-            self.tasks[indexPath] = self.imageLoader?.loadImageData(from: model.image) { [weak cell] result in
-                let data = try? result.get()
-                let image = data.map(UIImage.init) ?? nil
-                cell?.feedImageView.image = image
-                cell?.feedImageRetryButton.isHidden = (image != nil)
-                cell?.imageContainer.stopShimmering()
-            }
-        }
-        
-        cell.onRetry = loadImage
-        loadImage()
-        return cell
+        let controller = cellController(forRowAt: indexPath)
+        return controller.makeCell()
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cancelTask(forRowAt: indexPath)
+        cellsController[indexPath] = nil
     }
     
     //MARK: - Helpers
     
-    private func cancelTask(forRowAt indexPath: IndexPath) {
-        tasks[indexPath]?.cancel()
-        tasks[indexPath] = nil
+    private func removeCellController(forRowAt indexPath: IndexPath) {
+        cellsController[indexPath] = nil
+    }
+    
+    private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
+        let model = tableModels[indexPath.row]
+        let cellController = FeedImageCellController(model: model, imageLoader: imageLoader!)
+        cellsController[indexPath] = cellController
+        return cellController
     }
 }
 
@@ -82,12 +66,12 @@ final class EssentialFeedController: UITableViewController {
 extension EssentialFeedController: UITableViewDataSourcePrefetching {
     public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let cellModel = tableModels[indexPath.row]
-            tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.image) { _ in }
+            let controller = cellController(forRowAt: indexPath)
+            controller.preload()
         }
     }
 
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach(cancelTask)
+        indexPaths.forEach(removeCellController)
     }
 }
