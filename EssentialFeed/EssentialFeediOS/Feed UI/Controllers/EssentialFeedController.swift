@@ -1,28 +1,22 @@
 import UIKit
 import EssentialFeed
 
-public protocol FeedImageDataLoaderTask {
-    func cancel()
-}
-
-public protocol FeedImageDataLoader {
-    typealias Result = Swift.Result<Data, Error>
-    func loadImageData(from url: URL, completion: @escaping ((Result) -> Void)) -> FeedImageDataLoaderTask
-}
-
 final class EssentialFeedController: UITableViewController {
     
     //MARK: - Properites
-    private var feedLoader: IFeedLoader?
+    private var refreshController: FeedRefreshViewController?
     private var imageLoader: FeedImageDataLoader?
     
-    private var tableModels = [FeedImage]()
+    
     private var tasks = [IndexPath: FeedImageDataLoaderTask]()
+    private var tableModels = [FeedImage]() {
+        didSet { tableView.reloadData() }
+    }
     
     //MARK: - Initializer
     convenience init(feedLoader: IFeedLoader, imageLoader: FeedImageDataLoader) {
         self.init()
-        self.feedLoader = feedLoader
+        self.refreshController = .init(feedLoader: feedLoader)
         self.imageLoader = imageLoader
     }
     
@@ -30,11 +24,14 @@ final class EssentialFeedController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        refreshControl = .init()
-        refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
-        tableView.prefetchDataSource = self
+        refreshControl = refreshController?.refreshView
+        refreshController?.onRefresh = { [weak self] model in
+            guard let self = self else { return }
+            self.tableModels = model
+        }
+        refreshController?.loadFeed()
         
-        loadFeed()
+        tableView.prefetchDataSource = self
     }
     
     //MARK: - TableView methods
@@ -74,28 +71,10 @@ final class EssentialFeedController: UITableViewController {
     }
     
     //MARK: - Helpers
-    private func loadFeed() {
-        refreshControl?.beginRefreshing()
-        feedLoader?.load { [weak self] result in
-            
-            if case let .success(model) = result {
-                self?.tableModels = model
-                self?.tableView.reloadData()
-            }
-            
-            self?.refreshControl?.endRefreshing()
-        }
-    }
     
     private func cancelTask(forRowAt indexPath: IndexPath) {
-            tasks[indexPath]?.cancel()
-            tasks[indexPath] = nil
-        }
-    
-    //MARK: - Selectors
-    
-    @objc private func load() {
-        loadFeed()
+        tasks[indexPath]?.cancel()
+        tasks[indexPath] = nil
     }
 }
 
