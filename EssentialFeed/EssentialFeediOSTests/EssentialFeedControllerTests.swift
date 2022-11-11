@@ -251,7 +251,7 @@ private extension EssentialFeedControllerTests {
     ) -> (sut: EssentialFeedController, loader: FeedLoaderSpy) {
         let feedLoader = FeedLoaderSpy()
         let feedImageLoader = FeedImageDataLoaderSpy()
-        let sut = EssentialFeedController(feedLoader: feedLoader, imageLoader: feedImageLoader)
+        let sut = FeedUIComposer.composeWith(feedLoader: feedLoader, imageLoader: feedImageLoader)
         
         checkMemoryLeak(sut, file: file, line: line)
         checkMemoryLeak(feedLoader, file: file, line: line)
@@ -265,7 +265,7 @@ private extension EssentialFeedControllerTests {
     ) -> (sut: EssentialFeedController, loader: FeedLoaderSpy, imageLoader: FeedImageDataLoaderSpy) {
         let feedLoader = FeedLoaderSpy()
         let feedImageLoader = FeedImageDataLoaderSpy()
-        let sut = EssentialFeedController(feedLoader: feedLoader, imageLoader: feedImageLoader)
+        let sut = FeedUIComposer.composeWith(feedLoader: feedLoader, imageLoader: feedImageLoader)
         
         checkMemoryLeak(sut, file: file, line: line)
         checkMemoryLeak(feedLoader, file: file, line: line)
