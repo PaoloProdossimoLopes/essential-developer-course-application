@@ -9,13 +9,18 @@ public enum FeedUIComposer {
         let refreshController = FeedRefreshViewController(feedLoader: feedLoader)
         let essentialFeedController = EssentialFeedController(refreshController: refreshController)
         
-        refreshController.onRefresh = { [weak essentialFeedController] models in
-            let controllers = models.map { model in
-                FeedImageCellController(model: model, imageLoader: imageLoader)
-            }
-            essentialFeedController?.update(controllers)
-        }
+        refreshController.onRefresh = adaptFeedToCellControllers(
+            forwardingTo: essentialFeedController, loader: imageLoader)
         
         return essentialFeedController
+    }
+    
+    private static func adaptFeedToCellControllers(forwardingTo controller: EssentialFeedController, loader: FeedImageDataLoader) -> (([FeedImage]) -> Void) {
+        return { [weak controller] models in
+            let controllers = models.map { model in
+                FeedImageCellController(model: model, imageLoader: loader)
+            }
+            controller?.update(controllers)
+        }
     }
 }
