@@ -21,7 +21,8 @@ public enum FeedUIComposer {
             let controllers = models.map { model in
                 let viewModel = FeedImageCellViewModel(
                     imageLoader: loader, model: model,
-                    dataValidator: { UIImage(data: $0) != nil })
+                    dataValidator: { UIImage(data: $0) != nil }
+                )
                 return FeedImageCellController(viewModel: viewModel)
             }
             

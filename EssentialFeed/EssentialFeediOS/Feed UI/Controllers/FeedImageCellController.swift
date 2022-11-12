@@ -1,5 +1,7 @@
 import UIKit
 
+typealias Observer<T> = (T) -> Void
+
 final class FeedImageCellController {
     
     //MARK: - Properties

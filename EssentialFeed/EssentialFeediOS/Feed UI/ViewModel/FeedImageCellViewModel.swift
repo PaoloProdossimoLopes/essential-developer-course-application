@@ -2,7 +2,6 @@ import Foundation
 import EssentialFeed
 
 final class FeedImageCellViewModel {
-    typealias Observer<T> = (T) -> Void
     
     //MARK: - Properties
     private var task: FeedImageDataLoaderTask?
