@@ -48,6 +48,7 @@
 		B18223F4291E9EEF00BC6F59 /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223F3291E9EEF00BC6F59 /* FeedImageCellController.swift */; };
 		B18223F7291EA46B00BC6F59 /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223F6291EA46B00BC6F59 /* FeedUIComposer.swift */; };
 		B18223FA291FAC7500BC6F59 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223F9291FAC7500BC6F59 /* FeedViewModel.swift */; };
+		B18223FC291FCCF200BC6F59 /* FeedImageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223FB291FCCF200BC6F59 /* FeedImageCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +136,7 @@
 		B18223F3291E9EEF00BC6F59 /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		B18223F6291EA46B00BC6F59 /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
 		B18223F9291FAC7500BC6F59 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		B18223FB291FCCF200BC6F59 /* FeedImageCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				B18223F9291FAC7500BC6F59 /* FeedViewModel.swift */,
+				B18223FB291FCCF200BC6F59 /* FeedImageCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B18223FC291FCCF200BC6F59 /* FeedImageCellViewModel.swift in Sources */,
 				B18223EE291E973F00BC6F59 /* FeedImageDataLoader.swift in Sources */,
 				B18223F7291EA46B00BC6F59 /* FeedUIComposer.swift in Sources */,
 				B18223E02913E5C500BC6F59 /* EssentialFeedController.swift in Sources */,

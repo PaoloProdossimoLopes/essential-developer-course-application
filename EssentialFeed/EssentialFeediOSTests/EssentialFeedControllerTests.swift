@@ -283,7 +283,7 @@ private extension EssentialFeedControllerTests {
         }
         
         feed.enumerated().forEach { index, image in
-            assertThat(sut, hasViewConfiguredFor: image, at: index)
+            assertThat(sut, hasViewConfiguredFor: image, at: index, file: file, line: line)
         }
     }
     

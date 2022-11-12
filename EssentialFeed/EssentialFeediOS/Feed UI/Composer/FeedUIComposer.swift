@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import EssentialFeed
 
 public enum FeedUIComposer {
@@ -19,8 +19,12 @@ public enum FeedUIComposer {
     private static func adaptFeedToCellControllers(forwardingTo controller: EssentialFeedController, loader: FeedImageDataLoader) -> (([FeedImage]) -> Void) {
         return { [weak controller] models in
             let controllers = models.map { model in
-                FeedImageCellController(model: model, imageLoader: loader)
+                let viewModel = FeedImageCellViewModel(
+                    imageLoader: loader, model: model,
+                    dataValidator: { UIImage(data: $0) != nil })
+                return FeedImageCellController(viewModel: viewModel)
             }
+            
             controller?.update(controllers)
         }
     }
