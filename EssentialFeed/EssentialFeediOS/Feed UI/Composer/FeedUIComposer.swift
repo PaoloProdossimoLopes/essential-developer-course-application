@@ -6,10 +6,11 @@ public enum FeedUIComposer {
         feedLoader: IFeedLoader,
         imageLoader: FeedImageDataLoader
     ) -> EssentialFeedController {
-        let refreshController = FeedRefreshViewController(feedLoader: feedLoader)
+        let feedViewModel = FeedViewModel(feedLoader: feedLoader)
+        let refreshController = FeedRefreshViewController(viewModel: feedViewModel)
         let essentialFeedController = EssentialFeedController(refreshController: refreshController)
         
-        refreshController.onRefresh = adaptFeedToCellControllers(
+        feedViewModel.onRefresh = adaptFeedToCellControllers(
             forwardingTo: essentialFeedController, loader: imageLoader)
         
         return essentialFeedController
