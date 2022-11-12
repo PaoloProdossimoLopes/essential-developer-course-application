@@ -2,15 +2,13 @@ import Foundation
 import EssentialFeed
 
 final class FeedViewModel {
+    typealias Observer<T> = (T) -> Void
+    
     //MARK: - Propeties
     private let feedLoader: IFeedLoader
-    private(set) var isLoading: Bool = false {
-        didSet { onChange?(self) }
-    }
     
-    var onChange: ((FeedViewModel) -> Void)?
-    var onRefresh: (([FeedImage]) -> Void)?
-    
+    var onLoadingStateChange: Observer<Bool>?
+    var onRefresh: Observer<[FeedImage]>?
     
     //MARK: - Initializer
     init(feedLoader: IFeedLoader) {
@@ -24,14 +22,14 @@ final class FeedViewModel {
     
     //MARK: - Helpers
     private func loadFeed() {
-        isLoading = true
+        onLoadingStateChange?(true)
         feedLoader.load { [weak self] result in
             
             if case let .success(model) = result {
                 self?.onRefresh?(model)
             }
             
-            self?.isLoading = false
+            self?.onLoadingStateChange?(false)
         }
     }
 }
