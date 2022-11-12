@@ -21,35 +21,26 @@ protocol IFeedRefreshPresenter {
     func load()
 }
 
-final class FeedPresenter: IFeedRefreshPresenter {
+final class FeedPresenter {
     
     //MARK: - Propeties
-    private let feedLoader: IFeedLoader
     
     var viewLoading: IFeedLoadingView?
     var viewPresent: IFeedPresentationView?
     
-    //MARK: - Initializer
-    init(feedLoader: IFeedLoader) {
-        self.feedLoader = feedLoader
-    }
-    
     //MARK: - Methods
-    func load() {
-        loadFeed()
+    
+    func didStartLoadingFeed() {
+        viewLoading?.display(PresentableLoadingModel(isLoading: true))
     }
     
-    //MARK: - Helpers
-    private func loadFeed() {
-        viewLoading?.display(PresentableLoadingModel(isLoading: true))
-        feedLoader.load { [weak self] result in
-            
-            if case let .success(model) = result {
-                self?.viewPresent?.display(PresentableDataModel(feed: model))
-            }
-            
-            self?.viewLoading?.display(PresentableLoadingModel(isLoading: false))
-        }
+    func didFinishLoadingFeed(with feed: [FeedImage]) {
+        viewPresent?.display(PresentableDataModel(feed: feed))
+        viewLoading?.display(PresentableLoadingModel(isLoading: false))
+    }
+    
+    func didFinishLoadingFailure() {
+        viewLoading?.display(PresentableLoadingModel(isLoading: false))
     }
 }
 

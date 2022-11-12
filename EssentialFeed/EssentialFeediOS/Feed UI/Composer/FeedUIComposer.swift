@@ -6,12 +6,16 @@ public enum FeedUIComposer {
         feedLoader: IFeedLoader,
         imageLoader: FeedImageDataLoader
     ) -> EssentialFeedController {
-        let presenter = FeedPresenter(feedLoader: feedLoader)
-        let refreshController = FeedRefreshViewController(presenter: presenter)
+        let feedPresenter = FeedPresenter()
+        let presenterLoaderAdapter = FeedLoaderPresentationAdapter(
+            feedLoader: feedLoader,
+            feedPresenter: feedPresenter
+        )
+        let refreshController = FeedRefreshViewController(presenter: presenterLoaderAdapter)
         let essentialFeedController = EssentialFeedController(refreshController: refreshController)
         
-        presenter.viewLoading = WeakRefVirtualProxy(refreshController)
-        presenter.viewPresent = FeedViewAdapter(
+        feedPresenter.viewLoading = WeakRefVirtualProxy(refreshController)
+        feedPresenter.viewPresent = FeedViewAdapter(
             controller: essentialFeedController,
             loader: imageLoader
         )
@@ -55,5 +59,29 @@ private final class WeakRefVirtualProxy<T: AnyObject> {
 extension WeakRefVirtualProxy: IFeedLoadingView where T: IFeedLoadingView {
     func display(_ model: PresentableLoadingModel) {
         object?.display(model)
+    }
+}
+
+private final class FeedLoaderPresentationAdapter: IFeedRefreshPresenter {
+    private let loader: IFeedLoader
+    private let presenter: FeedPresenter
+    
+    init(feedLoader: IFeedLoader, feedPresenter: FeedPresenter) {
+        self.loader = feedLoader
+        self.presenter = feedPresenter
+    }
+    
+    func load() {
+        presenter.didStartLoadingFeed()
+        
+        loader.load { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(model):
+                self.presenter.didFinishLoadingFeed(with: model)
+            case .failure:
+                self.presenter.didFinishLoadingFailure()
+            }
+        }
     }
 }
