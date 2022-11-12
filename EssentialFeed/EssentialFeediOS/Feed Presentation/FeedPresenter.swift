@@ -1,15 +1,27 @@
 import Foundation
 import EssentialFeed
 
+struct PresentableLoadingModel {
+    let isLoading: Bool
+}
+
+struct PresentableDataModel {
+    let feed: [FeedImage]
+}
+
 protocol IFeedLoadingView {
-    func display(_ isLoading: Bool)
+    func display(_ model: PresentableLoadingModel)
 }
 
 protocol IFeedPresentationView {
-    func display(_ feed: [FeedImage])
+    func display(_ model: PresentableDataModel)
 }
 
-final class FeedPresenter {
+protocol IFeedRefreshPresenter {
+    func load()
+}
+
+final class FeedPresenter: IFeedRefreshPresenter {
     
     //MARK: - Propeties
     private let feedLoader: IFeedLoader
@@ -29,14 +41,14 @@ final class FeedPresenter {
     
     //MARK: - Helpers
     private func loadFeed() {
-        viewLoading?.display(true)
+        viewLoading?.display(PresentableLoadingModel(isLoading: true))
         feedLoader.load { [weak self] result in
             
             if case let .success(model) = result {
-                self?.viewPresent?.display(model)
+                self?.viewPresent?.display(PresentableDataModel(feed: model))
             }
             
-            self?.viewLoading?.display(false)
+            self?.viewLoading?.display(PresentableLoadingModel(isLoading: false))
         }
     }
 }

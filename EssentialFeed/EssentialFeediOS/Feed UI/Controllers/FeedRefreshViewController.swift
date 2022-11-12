@@ -1,18 +1,18 @@
 import UIKit
 
 final class FeedRefreshViewController: NSObject, IFeedLoadingView {
-    func display(_ isLoading: Bool) {
-        isLoading ? refreshView.beginRefreshing() : refreshView.endRefreshing()
+    func display(_ model: PresentableLoadingModel) {
+        model.isLoading ? refreshView.beginRefreshing() : refreshView.endRefreshing()
     }
     
     //MARK: - Properties
-    private var presenter: FeedPresenter
+    private var presenter: IFeedRefreshPresenter
     
     //MARK: - UI Component
     private(set) lazy var refreshView = loadView(UIRefreshControl())
     
     //MARK: - Initializer
-    init(presenter: FeedPresenter) {
+    init(presenter: IFeedRefreshPresenter) {
         self.presenter = presenter
     }
     
