@@ -2,51 +2,46 @@ import UIKit
 
 typealias Observer<T> = (T) -> Void
 
-final class FeedImageCellController {
+protocol FeedImageCellControllerDelegate {
+    func didRequestImage()
+    func didCancelImageRequest()
+}
+
+
+final class FeedImageCellController: FeedImageCellLoadViewProtocol {
     
     //MARK: - Properties
-    private let viewModel: FeedImageCellViewModel
+    private let delegate: FeedImageCellControllerDelegate
+    private let cell = FeedImageCell()
     
     //MARK: - Initializers
-    init(viewModel: FeedImageCellViewModel) {
-        self.viewModel = viewModel
+    init(delegate: FeedImageCellControllerDelegate) {
+        self.delegate = delegate
     }
     
     //MARK: - Methods
-    func preload() {
-        viewModel.loadImageData()
+    func makeCell() -> FeedImageCell {
+        delegate.didRequestImage()
+        return cell
     }
     
-    func makeCell() -> UITableViewCell {
-        let cell = binded(FeedImageCell())
-        cell.onRetry?()
-        return cell
+    func preload() {
+        delegate.didRequestImage()
     }
     
     func cancelLoad() {
-        viewModel.cancel()
+        delegate.didCancelImageRequest()
     }
     
     //MARK: - Helpers
-    private func binded(_ cell: FeedImageCell) -> FeedImageCell {
-        cell.descriptionLabel.text = viewModel.description
-        cell.localtionLabel.text = viewModel.location
-        cell.localtionContainer.isHidden = !viewModel.hasLocaltion
-        cell.onRetry = viewModel.loadImageData
+    func display(model: FeedImagePresentableModel) {
+        cell.descriptionLabel.text = model.description
+        cell.localtionLabel.text = model.location
+        cell.localtionContainer.isHidden = !model.hasLocation
         
-        viewModel.onLoadChange = { [weak cell] data in
-            let image = data.map(UIImage.init) ?? nil
-            cell?.feedImageView.image = image
-        }
-        
-        viewModel.onImageLoadingStateChange = { [weak cell] isLoading in
-            cell?.imageContainer.isShimerring = isLoading
-        }
-        
-        viewModel.onShouldRetryImageLoadStateChange = { [weak cell] shouldRetry in
-            cell?.feedImageRetryButton.isHidden = !shouldRetry
-        }
-        
-        return cell
+        cell.feedImageView.image = UIImage(data: model.data ?? Data())
+        cell.imageContainer.isShimerring = model.isLoading
+        cell.feedImageRetryButton.isHidden = !model.shouldRetry
+        cell.onRetry = delegate.didRequestImage
     }
 }
