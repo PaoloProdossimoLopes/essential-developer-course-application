@@ -9,14 +9,7 @@ final class EssentialFeedControllerTests: XCTestCase {
         
         sut.loadViewIfNeeded()
         
-        let bundle = Bundle(for: EssentialFeedController.self)
-        let localizedKey = "FEED_VIEW_TITLE"
-        let localizableTitle = bundle.localizedString(forKey: localizedKey, value: nil, table: "Feed")
-        XCTAssertEqual(sut.title, localizableTitle)
-        XCTAssertNotEqual(
-            localizableTitle, localizedKey,
-            "Missing Localized string for key: \(localizedKey)"
-        )
+        XCTAssertEqual(sut.title, localized("FEED_VIEW_TITLE"))
     }
     
     func test_loadFeedActions_requestFeedToLoad() {
@@ -270,6 +263,19 @@ final class EssentialFeedControllerTests: XCTestCase {
 
 //MARK: - Helpers
 private extension EssentialFeedControllerTests {
+    
+    func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
+        let table = "Feed"
+        let bundle = Bundle(for: EssentialFeedController.self)
+        let value = bundle.localizedString(forKey: key, value: nil, table: table)
+        
+        if value == key {
+            XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
+        }
+        
+        return value
+    }
+    
     func makeEnviroment(
         file: StaticString = #filePath,
         line: UInt = #line
