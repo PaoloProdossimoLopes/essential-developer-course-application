@@ -51,6 +51,7 @@
 		B18223FC291FCCF200BC6F59 /* FeedImageCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223FB291FCCF200BC6F59 /* FeedImageCellViewModel.swift */; };
 		B18223FF291FD8D000BC6F59 /* FeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223FE291FD8D000BC6F59 /* FeedPresenter.swift */; };
 		B19FBC192921B865000A0812 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = B19FBC1B2921B865000A0812 /* Feed.strings */; };
+		B19FBC1F2921B93F000A0812 /* FeedLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19FBC1E2921B93F000A0812 /* FeedLocalizationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,7 @@
 		B18223FE291FD8D000BC6F59 /* FeedPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedPresenter.swift; sourceTree = "<group>"; };
 		B19FBC1A2921B865000A0812 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
 		B19FBC1C2921B8B8000A0812 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Feed.strings"; sourceTree = "<group>"; };
+		B19FBC1E2921B93F000A0812 /* FeedLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLocalizationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +329,7 @@
 		B18223D4291363BA00BC6F59 /* EssentialFeediOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				B19FBC1D2921B92F000A0812 /* FeedPresentation */,
 				B18223D5291363BA00BC6F59 /* EssentialFeedControllerTests.swift */,
 			);
 			path = EssentialFeediOSTests;
@@ -393,6 +396,14 @@
 				B19FBC1B2921B865000A0812 /* Feed.strings */,
 			);
 			path = "Feed Presentation";
+			sourceTree = "<group>";
+		};
+		B19FBC1D2921B92F000A0812 /* FeedPresentation */ = {
+			isa = PBXGroup;
+			children = (
+				B19FBC1E2921B93F000A0812 /* FeedLocalizationTests.swift */,
+			);
+			path = FeedPresentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -667,6 +678,7 @@
 			files = (
 				B18223DE2913DB6600BC6F59 /* XCTestCase+memoryLeakChecker.swift in Sources */,
 				B18223D6291363BA00BC6F59 /* EssentialFeedControllerTests.swift in Sources */,
+				B19FBC1F2921B93F000A0812 /* FeedLocalizationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
