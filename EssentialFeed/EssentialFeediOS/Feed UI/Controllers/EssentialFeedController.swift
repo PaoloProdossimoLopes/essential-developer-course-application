@@ -37,7 +37,7 @@ final class EssentialFeedController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let controller = cellController(forRowAt: indexPath)
-        return controller.makeCell()
+        return controller.makeCell() ?? .init()
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {

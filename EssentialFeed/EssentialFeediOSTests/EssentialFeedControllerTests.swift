@@ -241,6 +241,16 @@ final class EssentialFeedControllerTests: XCTestCase {
             sut.simulateFeedImageViewNotNearVisible(at: 1)
             XCTAssertEqual(imageLoader.recievedCancelURLs, [image0.image, image1.image], "Expected second cancelled image URL request once second image is not near visible anymore")
         }
+    
+    func test_feedImageView_does_not_render_loaded_image_when_not_visible_anymore() {
+        let (sut, feedLoader, imageLoader) = makeEnviroment()
+        sut.loadViewIfNeeded()
+        feedLoader.completes(with: [makeImage()])
+        
+        let view = sut.simulateFeedImageViewNotVisible(at: 0)
+        imageLoader.completeImageLoading(with: UIImage.make(withColor: .red).pngData()!)
+        XCTAssertNil(view?.renderedImage, "Expeceted no rendered image when an image load finished after the view is not visible anymore")
+    }
 }
 
 //MARK: - Helpers
@@ -383,12 +393,15 @@ private extension EssentialFeedController {
         return feedImageView(at: index) as? FeedImageCell
     }
     
-    func simulateFeedImageViewNotVisible(at row: Int) {
+    @discardableResult
+    func simulateFeedImageViewNotVisible(at row: Int) -> FeedImageCell? {
         let view = simulateFeedImageViewVisible(at: row)
         
         let delegate = tableView.delegate
         let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
+        
+        return view
     }
     
     private var feedImagesSection: Int {

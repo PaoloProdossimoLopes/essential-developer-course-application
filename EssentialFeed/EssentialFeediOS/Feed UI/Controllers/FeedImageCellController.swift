@@ -12,7 +12,7 @@ final class FeedImageCellController: FeedImageCellLoadViewProtocol {
     
     //MARK: - Properties
     private let delegate: FeedImageCellControllerDelegate
-    private let cell = FeedImageCell()
+    private var cell: FeedImageCell? = FeedImageCell()
     
     //MARK: - Initializers
     init(delegate: FeedImageCellControllerDelegate) {
@@ -20,7 +20,7 @@ final class FeedImageCellController: FeedImageCellLoadViewProtocol {
     }
     
     //MARK: - Methods
-    func makeCell() -> FeedImageCell {
+    func makeCell() -> FeedImageCell? {
         delegate.didRequestImage()
         return cell
     }
@@ -30,18 +30,23 @@ final class FeedImageCellController: FeedImageCellLoadViewProtocol {
     }
     
     func cancelLoad() {
+        releaseCellForReuse()
         delegate.didCancelImageRequest()
     }
     
     //MARK: - Helpers
     func display(model: FeedImagePresentableModel) {
-        cell.descriptionLabel.text = model.description
-        cell.localtionLabel.text = model.location
-        cell.localtionContainer.isHidden = !model.hasLocation
+        cell?.descriptionLabel.text = model.description
+        cell?.localtionLabel.text = model.location
+        cell?.localtionContainer.isHidden = !model.hasLocation
         
-        cell.feedImageView.image = UIImage(data: model.data ?? Data())
-        cell.imageContainer.isShimerring = model.isLoading
-        cell.feedImageRetryButton.isHidden = !model.shouldRetry
-        cell.onRetry = delegate.didRequestImage
+        cell?.feedImageView.image = UIImage(data: model.data ?? Data())
+        cell?.imageContainer.isShimerring = model.isLoading
+        cell?.feedImageRetryButton.isHidden = !model.shouldRetry
+        cell?.onRetry = delegate.didRequestImage
+    }
+    
+    func releaseCellForReuse() {
+        cell = nil
     }
 }
