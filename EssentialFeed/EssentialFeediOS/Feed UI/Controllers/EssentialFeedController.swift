@@ -16,8 +16,6 @@ final class EssentialFeedController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = FeedPresenter.title
-        
         refreshControl = refreshController?.refreshView
         
         refreshController?.loadFeed()

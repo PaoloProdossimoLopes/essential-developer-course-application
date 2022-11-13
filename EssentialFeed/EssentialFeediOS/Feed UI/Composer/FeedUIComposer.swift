@@ -13,6 +13,7 @@ public enum FeedUIComposer {
         )
         let refreshController = FeedRefreshViewController(presenter: presenterLoaderAdapter)
         let essentialFeedController = EssentialFeedController(refreshController: refreshController)
+        essentialFeedController.title = FeedPresenter.title
         
         feedPresenter.viewLoading = WeakRefVirtualProxy(refreshController)
         feedPresenter.viewPresent = FeedViewAdapter(
