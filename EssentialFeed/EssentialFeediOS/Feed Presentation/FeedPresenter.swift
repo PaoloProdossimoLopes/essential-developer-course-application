@@ -28,6 +28,10 @@ final class FeedPresenter {
     var viewLoading: IFeedLoadingView?
     var viewPresent: IFeedPresentationView?
     
+    static var title: String {
+        return "MyFeed"
+    }
+    
     //MARK: - Methods
     
     func didStartLoadingFeed() {
