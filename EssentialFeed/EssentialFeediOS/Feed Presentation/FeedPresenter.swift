@@ -29,7 +29,12 @@ final class FeedPresenter {
     var viewPresent: IFeedPresentationView?
     
     static var title: String {
-        return "MyFeed"
+        return NSLocalizedString(
+            "FEED_VIEW_TITLE",
+            tableName: "Feed",
+            bundle: .init(for: FeedPresenter.self),
+            comment: "Title for the FeedView"
+        )
     }
     
     //MARK: - Methods

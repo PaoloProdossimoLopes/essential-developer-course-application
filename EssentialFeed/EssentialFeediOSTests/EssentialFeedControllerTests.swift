@@ -4,6 +4,21 @@ import EssentialFeed
 
 final class EssentialFeedControllerTests: XCTestCase {
     
+    func test_feedView_hasTitle() {
+        let (sut, _) = makeEnviroment()
+        
+        sut.loadViewIfNeeded()
+        
+        let bundle = Bundle(for: EssentialFeedController.self)
+        let localizedKey = "FEED_VIEW_TITLE"
+        let localizableTitle = bundle.localizedString(forKey: localizedKey, value: nil, table: "Feed")
+        XCTAssertEqual(sut.title, localizableTitle)
+        XCTAssertNotEqual(
+            localizableTitle, localizedKey,
+            "Missing Localized string for key: \(localizedKey)"
+        )
+    }
+    
     func test_loadFeedActions_requestFeedToLoad() {
         let (sut, loader) = makeEnviroment()
         XCTAssertEqual(loader.loadCallCount, 0, "Expected no loading requests before view is loading")
