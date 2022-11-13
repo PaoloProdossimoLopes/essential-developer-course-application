@@ -40,7 +40,9 @@ final class FeedImageCellController: FeedImageCellLoadViewProtocol {
         cell?.localtionLabel.text = model.location
         cell?.localtionContainer.isHidden = !model.hasLocation
         
-        cell?.feedImageView.image = UIImage(data: model.data ?? Data())
+        let image = UIImage(data: model.data ?? Data())
+        cell?.feedImageView.setImageAnimated(image)
+        
         cell?.imageContainer.isShimerring = model.isLoading
         cell?.feedImageRetryButton.isHidden = !model.shouldRetry
         cell?.onRetry = delegate.didRequestImage
@@ -48,5 +50,18 @@ final class FeedImageCellController: FeedImageCellLoadViewProtocol {
     
     func releaseCellForReuse() {
         cell = nil
+    }
+}
+
+extension UIImageView {
+    func setImageAnimated(_ newImage: UIImage?) {
+        image = newImage
+        
+        if image != nil {
+            alpha = 0
+            UIView.animate(withDuration: 0.25) {
+                self.alpha = 1
+            }
+        }
     }
 }
