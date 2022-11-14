@@ -29,6 +29,19 @@ final class EssentialFeedControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCount, 4, "Expeceted a thir loading request once user initiates another load")
     }
     
+    func test_loadFeedCompletion_dispatchesFromBackgroundThreadToMinThread() {
+        let (sut, loader) = makeEnviroment()
+        sut.userInitiateLoadFeed()
+        
+        let expectation = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            loader.completes(with: [self.makeImage()], at: 0)
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
     func test_viewDidLoad_showsLoadingIndicator() {
         let (sut, loader) = makeEnviroment()
         

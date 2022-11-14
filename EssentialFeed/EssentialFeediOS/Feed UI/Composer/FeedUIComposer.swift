@@ -8,7 +8,7 @@ public enum FeedUIComposer {
     ) -> EssentialFeedController {
         let feedPresenter = FeedPresenter()
         let presenterLoaderAdapter = FeedLoaderPresentationAdapter(
-            feedLoader: feedLoader,
+            feedLoader: MainThreadDecorator(feedLoader),
             feedPresenter: feedPresenter
         )
         let refreshController = FeedRefreshViewController(presenter: presenterLoaderAdapter)
@@ -22,6 +22,26 @@ public enum FeedUIComposer {
         )
         
         return essentialFeedController
+    }
+}
+
+private final class MainThreadDecorator: IFeedLoader {
+    private let decoratee: IFeedLoader
+    
+    init(_ decoratee: IFeedLoader) {
+        self.decoratee = decoratee
+    }
+    
+    func load(completion: @escaping ((EssentialFeed.FeedResult) -> Void)) {
+        decoratee.load { result in
+            if Thread.isMainThread {
+                completion(result)
+            } else {
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+        }
     }
 }
 
