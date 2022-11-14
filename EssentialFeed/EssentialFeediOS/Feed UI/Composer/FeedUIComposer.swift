@@ -18,7 +18,7 @@ public enum FeedUIComposer {
         feedPresenter.viewLoading = WeakRefVirtualProxy(refreshController)
         feedPresenter.viewPresent = FeedViewAdapter(
             controller: essentialFeedController,
-            loader: imageLoader
+            loader: MainThreadDecorator(imageLoader)
         )
         
         return essentialFeedController
@@ -51,14 +51,13 @@ extension MainThreadDecorator: IFeedLoader where T == IFeedLoader {
     }
 }
 
-
-
-
-
-
-
-
-
+extension MainThreadDecorator: FeedImageDataLoader where T == FeedImageDataLoader {
+    func loadImageData(from url: URL, completion: @escaping ((FeedImageDataLoader.Result) -> Void)) -> FeedImageDataLoaderTask {
+        decoratee.loadImageData(from: url) { [weak self] result in
+            self?.onMainIfNeeded { completion(result) }
+        }
+    }
+}
 
 
 private final class FeedViewAdapter: IFeedPresentationView {

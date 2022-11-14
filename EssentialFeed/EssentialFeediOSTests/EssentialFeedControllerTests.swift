@@ -42,6 +42,21 @@ final class EssentialFeedControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
     
+    func test_loadImageDataCompletion_dispatchesFromBackgroundThreadToMinThread() {
+        let (sut, loader, imageLoader) = makeEnviroment()
+        sut.loadViewIfNeeded()
+        loader.completes(with: [makeImage()])
+        _ = sut.simulateFeedImageViewVisible(at: 0)
+        
+        let expectation = expectation(description: "wait for background queue")
+        DispatchQueue.global().async {
+            imageLoader.completeImageLoading(with: UIImage.make(withColor: .red).pngData()!)
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 1.0)
+    }
+    
     func test_viewDidLoad_showsLoadingIndicator() {
         let (sut, loader) = makeEnviroment()
         
