@@ -25,25 +25,41 @@ public enum FeedUIComposer {
     }
 }
 
-private final class MainThreadDecorator: IFeedLoader {
-    private let decoratee: IFeedLoader
+private final class MainThreadDecorator<T> {
     
-    init(_ decoratee: IFeedLoader) {
+    private let decoratee: T
+    
+    init(_ decoratee: T) {
         self.decoratee = decoratee
     }
     
+    func onMainIfNeeded(_ completion: @escaping () -> Void) {
+        
+        guard Thread.isMainThread else {
+            return DispatchQueue.main.async(execute: completion)
+        }
+        
+        return completion()
+    }
+}
+
+extension MainThreadDecorator: IFeedLoader where T == IFeedLoader {
     func load(completion: @escaping ((EssentialFeed.FeedResult) -> Void)) {
-        decoratee.load { result in
-            if Thread.isMainThread {
-                completion(result)
-            } else {
-                DispatchQueue.main.async {
-                    completion(result)
-                }
-            }
+        decoratee.load { [weak self] result in
+            self?.onMainIfNeeded { completion(result) }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 private final class FeedViewAdapter: IFeedPresentationView {
     
