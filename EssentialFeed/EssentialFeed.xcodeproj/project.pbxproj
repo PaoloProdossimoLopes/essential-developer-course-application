@@ -52,6 +52,8 @@
 		B18223FF291FD8D000BC6F59 /* FeedPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18223FE291FD8D000BC6F59 /* FeedPresenter.swift */; };
 		B19FBC192921B865000A0812 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = B19FBC1B2921B865000A0812 /* Feed.strings */; };
 		B19FBC1F2921B93F000A0812 /* FeedLocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19FBC1E2921B93F000A0812 /* FeedLocalizationTests.swift */; };
+		B19FBC212921CAED000A0812 /* MainThreadDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19FBC202921CAED000A0812 /* MainThreadDecorator.swift */; };
+		B19FBC232921CB12000A0812 /* WeakRefVirtualProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19FBC222921CB12000A0812 /* WeakRefVirtualProxy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +146,8 @@
 		B19FBC1A2921B865000A0812 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
 		B19FBC1C2921B8B8000A0812 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Feed.strings"; sourceTree = "<group>"; };
 		B19FBC1E2921B93F000A0812 /* FeedLocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLocalizationTests.swift; sourceTree = "<group>"; };
+		B19FBC202921CAED000A0812 /* MainThreadDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThreadDecorator.swift; sourceTree = "<group>"; };
+		B19FBC222921CB12000A0812 /* WeakRefVirtualProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRefVirtualProxy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,6 +387,8 @@
 			isa = PBXGroup;
 			children = (
 				B18223F6291EA46B00BC6F59 /* FeedUIComposer.swift */,
+				B19FBC222921CB12000A0812 /* WeakRefVirtualProxy.swift */,
+				B19FBC202921CAED000A0812 /* MainThreadDecorator.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -662,12 +668,14 @@
 				B18223EE291E973F00BC6F59 /* FeedImageDataLoader.swift in Sources */,
 				B18223F7291EA46B00BC6F59 /* FeedUIComposer.swift in Sources */,
 				B18223FF291FD8D000BC6F59 /* FeedPresenter.swift in Sources */,
+				B19FBC212921CAED000A0812 /* MainThreadDecorator.swift in Sources */,
 				B18223E02913E5C500BC6F59 /* EssentialFeedController.swift in Sources */,
 				B18223F2291E9A6A00BC6F59 /* FeedRefreshViewController.swift in Sources */,
 				B18223F4291E9EEF00BC6F59 /* FeedImageCellController.swift in Sources */,
 				B18223EA291D428800BC6F59 /* UIView+Shimmering.swift in Sources */,
 				B18223E8291C8BD300BC6F59 /* FeedImageCell.swift in Sources */,
 				B18223CB291363BA00BC6F59 /* EssentialFeediOS.docc in Sources */,
+				B19FBC232921CB12000A0812 /* WeakRefVirtualProxy.swift in Sources */,
 				B18223FA291FAC7500BC6F59 /* FeedViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

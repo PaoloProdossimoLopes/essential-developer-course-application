@@ -25,39 +25,6 @@ public enum FeedUIComposer {
     }
 }
 
-private final class MainThreadDecorator<T> {
-    
-    private let decoratee: T
-    
-    init(_ decoratee: T) {
-        self.decoratee = decoratee
-    }
-    
-    func onMainIfNeeded(_ completion: @escaping () -> Void) {
-        
-        guard Thread.isMainThread else {
-            return DispatchQueue.main.async(execute: completion)
-        }
-        
-        return completion()
-    }
-}
-
-extension MainThreadDecorator: IFeedLoader where T == IFeedLoader {
-    func load(completion: @escaping ((EssentialFeed.FeedResult) -> Void)) {
-        decoratee.load { [weak self] result in
-            self?.onMainIfNeeded { completion(result) }
-        }
-    }
-}
-
-extension MainThreadDecorator: FeedImageDataLoader where T == FeedImageDataLoader {
-    func loadImageData(from url: URL, completion: @escaping ((FeedImageDataLoader.Result) -> Void)) -> FeedImageDataLoaderTask {
-        decoratee.loadImageData(from: url) { [weak self] result in
-            self?.onMainIfNeeded { completion(result) }
-        }
-    }
-}
 
 
 private final class FeedViewAdapter: IFeedPresentationView {
@@ -81,27 +48,6 @@ private final class FeedViewAdapter: IFeedPresentationView {
         }
         
         controller?.update(controllers)
-    }
-}
-
-
-private final class WeakRefVirtualProxy<T: AnyObject> {
-    private weak var object: T?
-    
-    init(_ object: T) {
-        self.object = object
-    }
-}
-
-extension WeakRefVirtualProxy: IFeedLoadingView where T: IFeedLoadingView {
-    func display(_ model: PresentableLoadingModel) {
-        object?.display(model)
-    }
-}
-
-extension WeakRefVirtualProxy: FeedImageCellLoadViewProtocol where T: FeedImageCellLoadViewProtocol {
-    func display(model: FeedImagePresentableModel) {
-        object?.display(model: model)
     }
 }
 
