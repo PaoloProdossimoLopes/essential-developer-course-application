@@ -1,8 +1,14 @@
-//
-//  UIImageView+Animations.swift
-//  EssentialFeediOS
-//
-//  Created by Paolo Prodossimo Lopes on 20/12/22.
-//
+import UIKit
 
-import Foundation
+extension UIImageView {
+    func setImageAnimated(_ newImage: UIImage?) {
+        image = newImage
+        
+        guard newImage != nil else { return }
+        
+        alpha = 0
+        UIView.animate(withDuration: 0.25) {
+            self.alpha = 1
+        }
+    }
+}
