@@ -1,8 +1,7 @@
-//
-//  UIRefreshControl+Helpers.swift
-//  EssentialFeediOS
-//
-//  Created by Paolo Prodossimo Lopes on 20/12/22.
-//
+import UIKit
 
-import Foundation
+extension UIRefreshControl {
+    func update(isRefreshing: Bool) {
+        isRefreshing ? beginRefreshing() : endRefreshing()
+    }
+}
