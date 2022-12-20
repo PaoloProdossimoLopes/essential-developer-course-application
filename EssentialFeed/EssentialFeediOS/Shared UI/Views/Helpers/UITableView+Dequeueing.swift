@@ -1,8 +1,8 @@
-//
-//  UITableView+Dequeueing.swift
-//  EssentialFeediOS
-//
-//  Created by Paolo Prodossimo Lopes on 20/12/22.
-//
+import UIKit
 
-import Foundation
+extension UITableView {
+    func dequeueReusableCell<T: UITableViewCell>() -> T {
+        let identifier = String(describing: T.self)
+        return dequeueReusableCell(withIdentifier: identifier) as! T
+    }
+}
