@@ -23,6 +23,11 @@ class URLSessionHTTPClientTests: XCTestCase {
            wait(for: [exp], timeout: 1.0)
        }
 
+    func test_cancelGetFromURLTask_cancelsURLRequest() {
+            let receivedError = resultErrorFor(taskHandler: { $0.cancel() }) as NSError?
+            
+            XCTAssertEqual(receivedError?.code, URLError.cancelled.rawValue)
+        }
     
     // MARK: - Helpers
         
