@@ -18,7 +18,18 @@ final class CacheFeedUseCaseTests: XCTestCase {
             
             XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
         }
+    
+    func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
+        let timestamp = Date()
+        let feed = uniqueImageFeed()
+        let (sut, store) = makeSUT(currentDate: { timestamp })
+        store.completeDeletionSuccessfully()
         
+        try? sut.save(feed.models)
+        
+        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed, .insert(feed.local, timestamp)])
+    }
+    
     
     // MARK: - Helpers
     
