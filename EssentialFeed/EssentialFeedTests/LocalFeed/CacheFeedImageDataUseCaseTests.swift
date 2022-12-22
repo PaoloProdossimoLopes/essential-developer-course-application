@@ -3,6 +3,14 @@ import EssentialFeed
 
 final class CacheFeedImageDataUseCaseTests: XCTestCase {
     
+    
+    func test_init_doesNotMessageStoreUponCreation() {
+        let (_, store) = makeSUT()
+        
+        XCTAssertTrue(store.receivedMessages.isEmpty)
+    }
+    
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
