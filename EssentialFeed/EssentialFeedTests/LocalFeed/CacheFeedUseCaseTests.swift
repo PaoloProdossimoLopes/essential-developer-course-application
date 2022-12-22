@@ -9,6 +9,16 @@ final class CacheFeedUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [])
     }
     
+    func test_save_doesNotRequestCacheInsertionOnDeletionError() {
+            let (sut, store) = makeSUT()
+            let deletionError = anyNSError()
+            store.completeDeletion(with: deletionError)
+            
+            try? sut.save(uniqueImageFeed().models)
+            
+            XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+        }
+        
     
     // MARK: - Helpers
     
