@@ -19,6 +19,15 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.receivedMessages, [.retrieve(dataFor: url)])
     }
     
+    func test_loadImageDataFromURL_failsOnStoreError() {
+        let (sut, store) = makeSUT()
+        
+        expect(sut, toCompleteWith: failed(), when: {
+            let retrievalError = anyNSError()
+            store.completeRetrieval(with: retrievalError)
+        })
+    }
+    
  
     // MARK: - Helpers
       
