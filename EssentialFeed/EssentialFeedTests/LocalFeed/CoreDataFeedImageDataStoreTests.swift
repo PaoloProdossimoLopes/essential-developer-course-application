@@ -2,6 +2,14 @@ import XCTest
 import EssentialFeed
 
 final class CoreDataFeedImageDataStoreTests: XCTestCase {
+    func test_retrieveImageData_deliversNotFoundWhenEmpty() {
+            let sut = makeSUT()
+            
+            expect(sut, toCompleteRetrievalWith: notFound(), for: anyURL())
+        }
+        
+       
+    
     // - MARK: Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> CoreDataFeedStore {
