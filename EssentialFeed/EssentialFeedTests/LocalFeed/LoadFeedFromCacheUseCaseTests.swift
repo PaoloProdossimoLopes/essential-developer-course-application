@@ -2,6 +2,12 @@ import XCTest
 import EssentialFeed
 
 final class LoadFeedFromCacheUseCaseTests: XCTestCase {
+    func test_init_doesNotMessageStoreUponCreation() {
+            let (_, store) = makeSUT()
+            
+            XCTAssertEqual(store.receivedMessages, [])
+        }
+        
     // MARK: - Helpers
        
        private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
