@@ -39,7 +39,6 @@ final class CoreDataFeedImageDataStoreTests: XCTestCase {
         
         expect(sut, toCompleteRetrievalWith: found(lastStoredData), for: url)
     }
-
     
     // - MARK: Helpers
     
