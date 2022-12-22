@@ -36,7 +36,6 @@ final class CacheFeedImageDataUseCaseTests: XCTestCase {
             store.completeInsertionSuccessfully()
         })
     }
-        
     
     // MARK: - Helpers
     
