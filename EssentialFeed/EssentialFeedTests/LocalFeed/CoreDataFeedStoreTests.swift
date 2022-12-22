@@ -68,7 +68,6 @@ final class CoreDataFeedStoreTests: XCTestCase, FeedStoreSpecs {
         
         assertThatDeleteEmptiesPreviouslyInsertedCache(on: sut)
     }
-    
    
     // - MARK: Helpers
      
