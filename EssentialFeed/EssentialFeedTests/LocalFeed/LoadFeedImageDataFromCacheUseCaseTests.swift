@@ -36,6 +36,16 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         })
     }
     
+    
+    func test_loadImageDataFromURL_deliversStoredDataOnFoundData() {
+        let (sut, store) = makeSUT()
+        let foundData = anyData()
+        
+        expect(sut, toCompleteWith: .success(foundData), when: {
+            store.completeRetrieval(with: foundData)
+        })
+    }
+
  
     // MARK: - Helpers
       
