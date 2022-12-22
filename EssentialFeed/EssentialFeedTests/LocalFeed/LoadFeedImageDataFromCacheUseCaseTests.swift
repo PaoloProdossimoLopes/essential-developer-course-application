@@ -28,6 +28,14 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         })
     }
     
+    func test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound() {
+        let (sut, store) = makeSUT()
+        
+        expect(sut, toCompleteWith: notFound(), when: {
+            store.completeRetrieval(with: .none)
+        })
+    }
+    
  
     // MARK: - Helpers
       
