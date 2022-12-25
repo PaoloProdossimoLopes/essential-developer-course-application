@@ -66,6 +66,15 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         })
     }
     
+    func test_load_hasNoSideEffectsOnRetrievalError() {
+        let (sut, store) = makeSUT()
+        store.completeRetrieval(with: anyNSError())
+        
+        _ = try? sut.load()
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve])
+    }
+    
 
     // MARK: - Helpers
        
