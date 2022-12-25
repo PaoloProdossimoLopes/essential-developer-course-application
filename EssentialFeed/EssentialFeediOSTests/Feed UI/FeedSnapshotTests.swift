@@ -4,7 +4,16 @@ import EssentialFeediOS
 
 final class FeedSnapshotTests: XCTestCase {
     
-    
+    func test_feedWithContent() {
+            let sut = makeSUT()
+            
+            sut.display(feedWithContent())
+            
+            assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_CONTENT_light")
+            assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_CONTENT_dark")
+            assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_light_extraExtraExtraLarge")
+        }
+        
     
     // MARK: - Helpers
     
