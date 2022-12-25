@@ -30,7 +30,23 @@ class FeedItemsMapperTests: XCTestCase {
         XCTAssertEqual(result, [])
     }
     
-    
+    func test_map_deliversItemsOn200HTTPResponseWithJSONItems() throws {
+        let item1 = makeItem(
+            id: UUID(),
+            imageURL: URL(string: "http://a-url.com")!)
+        
+        let item2 = makeItem(
+            id: UUID(),
+            description: "a description",
+            location: "a location",
+            imageURL: URL(string: "http://another-url.com")!)
+        
+        let json = makeItemsJSON([item1.json, item2.json])
+        
+        let result = try FeedItemsMapper.map(json, from: HTTPURLResponse(statusCode: 200))
+        
+        XCTAssertEqual(result, [item1.model, item2.model])
+    }
     
     // MARK: - Helpers
         
