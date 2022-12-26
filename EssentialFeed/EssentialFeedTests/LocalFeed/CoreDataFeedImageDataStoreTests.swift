@@ -1,14 +1,13 @@
 import XCTest
 import EssentialFeed
 
-class CoreDataFeedImageDataStoreTests: XCTestCase {
-    
+final class CoreDataFeedImageDataStoreTests: XCTestCase {
     func test_retrieveImageData_deliversNotFoundWhenEmpty() {
-        let sut = makeSUT()
+            let sut = makeSUT()
+            
+            expect(sut, toCompleteRetrievalWith: notFound(), for: anyURL())
+        }
         
-        expect(sut, toCompleteRetrievalWith: notFound(), for: anyURL())
-    }
-    
     func test_retrieveImageData_deliversNotFoundWhenStoredDataURLDoesNotMatch() {
         let sut = makeSUT()
         let url = URL(string: "http://a-url.com")!
@@ -64,7 +63,7 @@ class CoreDataFeedImageDataStoreTests: XCTestCase {
     
     private func expect(_ sut: CoreDataFeedStore, toCompleteRetrievalWith expectedResult: Result<Data?, Error>, for url: URL,  file: StaticString = #filePath, line: UInt = #line) {
         let receivedResult = Result { try sut.retrieve(dataForURL: url) }
-
+        
         switch (receivedResult, expectedResult) {
         case let (.success( receivedData), .success(expectedData)):
             XCTAssertEqual(receivedData, expectedData, file: file, line: line)

@@ -1,7 +1,8 @@
 import XCTest
 import EssentialFeed
 
-class CacheFeedImageDataUseCaseTests: XCTestCase {
+final class CacheFeedImageDataUseCaseTests: XCTestCase {
+    
     
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
@@ -35,7 +36,7 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
             store.completeInsertionSuccessfully()
         })
     }
-        
+    
     // MARK: - Helpers
     
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
@@ -67,5 +68,4 @@ class CacheFeedImageDataUseCaseTests: XCTestCase {
             XCTFail("Expected result \(expectedResult), got \(receivedResult) instead", file: file, line: line)
         }
     }
-    
 }

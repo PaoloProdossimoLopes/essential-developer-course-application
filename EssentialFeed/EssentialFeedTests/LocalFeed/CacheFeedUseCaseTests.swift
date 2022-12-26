@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class CacheFeedUseCaseTests: XCTestCase {
+final class CacheFeedUseCaseTests: XCTestCase {
     
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
@@ -10,14 +10,14 @@ class CacheFeedUseCaseTests: XCTestCase {
     }
     
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
-        let (sut, store) = makeSUT()
-        let deletionError = anyNSError()
-        store.completeDeletion(with: deletionError)
-        
-        try? sut.save(uniqueImageFeed().models)
-        
-        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
-    }
+            let (sut, store) = makeSUT()
+            let deletionError = anyNSError()
+            store.completeDeletion(with: deletionError)
+            
+            try? sut.save(uniqueImageFeed().models)
+            
+            XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+        }
     
     func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
         let timestamp = Date()
@@ -77,5 +77,4 @@ class CacheFeedUseCaseTests: XCTestCase {
             XCTAssertEqual(error as NSError?, expectedError, file: file, line: line)
         }
     }
-    
 }

@@ -1,13 +1,15 @@
 import XCTest
 import EssentialFeed
 
-class ValidateFeedCacheUseCaseTests: XCTestCase {
+final class ValidateFeedCacheUseCaseTests: XCTestCase {
+    
     
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
         XCTAssertEqual(store.receivedMessages, [])
     }
+    
     
     func test_validateCache_deletesCacheOnRetrievalError() {
         let (sut, store) = makeSUT()
@@ -82,6 +84,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
         })
     }
     
+    
     func test_validateCache_succeedsOnEmptyCache() {
         let (sut, store) = makeSUT()
         
@@ -100,6 +103,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
             store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimestamp)
         })
     }
+    
     
     func test_validateCache_failsOnDeletionErrorOfExpiredCache() {
         let feed = uniqueImageFeed()
@@ -125,6 +129,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
             store.completeDeletionSuccessfully()
         })
     }
+    
     
     // MARK: - Helpers
     
@@ -152,5 +157,4 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
             XCTFail("Expected result \(expectedResult), got \(receivedResult) instead", file: file, line: line)
         }
     }
-    
 }

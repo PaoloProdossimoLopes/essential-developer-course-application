@@ -1,17 +1,10 @@
-//
-//  UIView+Shimmering.swift
-//  EssentialFeediOS
-//
-//  Created by Paolo Prodossimo Lopes on 10/11/22.
-//
-
 import UIKit
 
 extension UIView {
-    public var isShimerring: Bool {
+    public var isShimmering: Bool {
         set {
             if newValue {
-                startShimmer()
+                startShimmering()
             } else {
                 stopShimmering()
             }
@@ -26,7 +19,7 @@ extension UIView {
         return "shimmer"
     }
     
-    private func startShimmer() {
+    private func startShimmering() {
         let white = UIColor.white.cgColor
         let alpha = UIColor.white.withAlphaComponent(0.75).cgColor
         let width = bounds.width

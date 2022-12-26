@@ -4,7 +4,7 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialFeed
 
-class ListSnapshotTests: XCTestCase {
+final class ListSnapshotTests: XCTestCase {
     
     func test_emptyList() {
         let sut = makeSUT()
