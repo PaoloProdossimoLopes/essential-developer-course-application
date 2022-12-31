@@ -104,4 +104,9 @@ class FeedAcceptanceTests: XCTestCase {
         return nav?.topViewController as! ListViewController
     }
     
+    private func response(for url: URL) -> (Data, HTTPURLResponse) {
+        let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
+        return (makeData(for: url), response)
+    }
+    
 }
