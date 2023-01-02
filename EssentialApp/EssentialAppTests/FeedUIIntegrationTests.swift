@@ -6,6 +6,14 @@ import EssentialFeediOS
 
 class FeedUIIntegrationTests: XCTestCase {
     
+    func test_feedView_hasTitle() {
+        let (sut, _) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        
+        XCTAssertEqual(sut.title, feedTitle)
+    }
+    
     
     
     // MARK: - Helpers
