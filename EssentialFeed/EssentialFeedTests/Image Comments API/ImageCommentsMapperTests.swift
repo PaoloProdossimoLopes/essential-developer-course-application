@@ -25,6 +25,17 @@ class ImageCommentsMapperTests: XCTestCase {
         }
     }
     
+    func test_map_deliversNoItemsOn2xxHTTPResponseWithEmptyJSONList() throws {
+        let emptyListJSON = makeItemsJSON([])
+        let samples = [200, 201, 250, 280, 299]
+        
+        try samples.forEach { code in
+            let result = try ImageCommentsMapper.map(emptyListJSON, from: HTTPURLResponse(statusCode: code))
+            
+            XCTAssertEqual(result, [])
+        }
+    }
+    
     
     private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
         let item = ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
