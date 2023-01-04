@@ -12,3 +12,7 @@ public struct ImageCommentViewModel: Hashable {
         self.username = username
     }
 }
+
+public struct ImageCommentsViewModel {
+    public let comments: [ImageCommentViewModel]
+}
