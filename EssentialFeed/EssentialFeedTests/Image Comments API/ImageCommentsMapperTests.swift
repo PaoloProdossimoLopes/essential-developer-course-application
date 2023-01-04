@@ -3,6 +3,17 @@ import EssentialFeed
 
 class ImageCommentsMapperTests: XCTestCase {
     
+    func test_map_throwsErrorOnNon2xxHTTPResponse() throws {
+        let json = makeItemsJSON([])
+        let samples = [199, 150, 300, 400, 500]
+        
+        try samples.forEach { code in
+            XCTAssertThrowsError(
+                try ImageCommentsMapper.map(json, from: HTTPURLResponse(statusCode: code))
+            )
+        }
+    }
+    
     
     private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
         let item = ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
