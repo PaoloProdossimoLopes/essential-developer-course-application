@@ -2,7 +2,7 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialApp
 
-class SceneDelegateTests: XCTestCase {
+final class SceneDelegateTests: XCTestCase {
     
     func test_configureWindow_setsWindowAsKeyAndVisible() {
         let window = UIWindowSpy()
@@ -27,13 +27,15 @@ class SceneDelegateTests: XCTestCase {
         XCTAssertNotNil(rootNavigation, "Expected a navigation controller as root, got \(String(describing: root)) instead")
         XCTAssertTrue(topController is ListViewController, "Expected a feed controller as top view controller, got \(String(describing: topController)) instead")
     }
+}
+
+private extension SceneDelegateTests {
     
-    private class UIWindowSpy: UIWindow {
+    final class UIWindowSpy: UIWindow {
         var makeKeyAndVisibleCallCount = 0
         
         override func makeKeyAndVisible() {
             makeKeyAndVisibleCallCount = 1
         }
     }
-    
 }
