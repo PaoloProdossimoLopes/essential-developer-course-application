@@ -11,7 +11,7 @@ public class LoadMoreCell: UITableViewCell {
         NSLayoutConstraint.activate([
             spinner.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: Metric.heightSpinner)
         ])
         
         return spinner
@@ -28,10 +28,10 @@ public class LoadMoreCell: UITableViewCell {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            contentView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: 8),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Metric.padding),
+            contentView.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: Metric.padding),
+            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Metric.padding),
+            contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: Metric.padding),
         ])
         
         return label
@@ -53,6 +53,10 @@ public class LoadMoreCell: UITableViewCell {
         set { messageLabel.text = newValue }
     }
     
+    private enum Metric {
+        static let padding = CGFloat(8)
+        static let heightSpinner = CGFloat(40)
+    }
 }
 
 public class LoadMoreCellController: NSObject, UITableViewDataSource, UITableViewDelegate {

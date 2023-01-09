@@ -29,10 +29,10 @@ public final class ErrorView: UIButton {
     
     private func configure() {
         var configuration = Configuration.plain()
-        configuration.titlePadding = 0
+        configuration.titlePadding = Metric.noPadding
         configuration.baseForegroundColor = .white
         configuration.background.backgroundColor = .errorBackgroundColor
-        configuration.background.cornerRadius = 0
+        configuration.background.cornerRadius = Metric.noRadius
         self.configuration = configuration
         
         addTarget(self, action: #selector(hideMessageAnimated), for: .touchUpInside)
@@ -41,7 +41,7 @@ public final class ErrorView: UIButton {
     }
     
     private var isVisible: Bool {
-        return alpha > 0
+        return alpha > Metric.invisible
     }
     
     private func setMessageAnimated(_ message: String?) {
@@ -55,27 +55,39 @@ public final class ErrorView: UIButton {
     private func showAnimated(_ message: String) {
         configuration?.attributedTitle = AttributedString(message, attributes: titleAttributes)
         
-        configuration?.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        configuration?.contentInsets = NSDirectionalEdgeInsets(
+            top: Metric.padding, leading: Metric.padding,
+            bottom: Metric.padding, trailing: Metric.padding
+        )
         
-        UIView.animate(withDuration: 0.25) {
-            self.alpha = 1
+        UIView.animate(withDuration: Metric.duration) {
+            self.alpha = Metric.visible
         }
     }
     
     @objc private func hideMessageAnimated() {
         UIView.animate(
-            withDuration: 0.25,
-            animations: { self.alpha = 0 },
+            withDuration: Metric.duration,
+            animations: { self.alpha = Metric.invisible },
             completion: { completed in
                 if completed { self.hideMessage() }
             })
     }
     
     private func hideMessage() {
-        alpha = 0
+        alpha = Metric.invisible
         configuration?.attributedTitle = nil
         configuration?.contentInsets = .zero
         onHide?()
+    }
+    
+    enum Metric {
+        static let invisible = CGFloat(0)
+        static let visible = CGFloat(1)
+        static let duration = 0.25
+        static let padding = CGFloat(8)
+        static let noPadding = CGFloat(0)
+        static let noRadius = CGFloat(0)
     }
 }
 
