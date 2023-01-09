@@ -12,6 +12,7 @@
 		B148127F295A502E00BAD997 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B148127E295A502E00BAD997 /* Assets.xcassets */; };
 		B1481282295A502E00BAD997 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1481280295A502E00BAD997 /* LaunchScreen.storyboard */; };
 		B1580184296C35C900020CA5 /* CommentsViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */; };
+		B158018A296C518F00020CA5 /* FeedRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1580189296C518F00020CA5 /* FeedRouter.swift */; };
 		B18FBE45295A51F10045946C /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE44295A51F10045946C /* NullStore.swift */; };
 		B18FBE47295A52040045946C /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE46295A52040045946C /* CombineHelpers.swift */; };
 		B18FBE50295A52FC0045946C /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */; };
@@ -77,6 +78,7 @@
 		B1481283295A502E00BAD997 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1481288295A502F00BAD997 /* EssentialAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
+		B1580189296C518F00020CA5 /* FeedRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedRouter.swift; sourceTree = "<group>"; };
 		B18FBE44295A51F10045946C /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
 		B18FBE46295A52040045946C /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			children = (
 				B1481275295A502C00BAD997 /* AppDelegate.swift */,
 				B1481277295A502C00BAD997 /* SceneDelegate.swift */,
+				B1580189296C518F00020CA5 /* FeedRouter.swift */,
 			);
 			path = ApplicationDelegate;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B158018A296C518F00020CA5 /* FeedRouter.swift in Sources */,
 				B18FBE45295A51F10045946C /* NullStore.swift in Sources */,
 				B18FBE56295A533D0045946C /* LoadResourcePresentationAdapter.swift in Sources */,
 				B18FBE50295A52FC0045946C /* FeedUIComposer.swift in Sources */,
