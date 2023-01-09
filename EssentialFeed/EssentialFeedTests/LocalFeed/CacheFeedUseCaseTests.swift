@@ -10,14 +10,14 @@ final class CacheFeedUseCaseTests: XCTestCase {
     }
     
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
-            let (sut, store) = makeSUT()
-            let deletionError = anyNSError()
-            store.completeDeletion(with: deletionError)
-            
-            try? sut.save(uniqueImageFeed().models)
-            
-            XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
-        }
+        let (sut, store) = makeSUT()
+        let deletionError = anyNSError()
+        store.completeDeletion(with: deletionError)
+        
+        try? sut.save(uniqueImageFeed().models)
+        
+        XCTAssertEqual(store.receivedMessages, [.deleteCachedFeed])
+    }
     
     func test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion() {
         let timestamp = Date()
@@ -57,10 +57,12 @@ final class CacheFeedUseCaseTests: XCTestCase {
             store.completeInsertionSuccessfully()
         })
     }
+}
+
+// MARK: - Helpers
+private extension CacheFeedUseCaseTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
+    func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         let store = FeedStoreSpy()
         let sut = LocalFeedLoader(store: store, currentDate: currentDate)
         checkMemoryLeak(store, file: file, line: line)
@@ -68,7 +70,7 @@ final class CacheFeedUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         action()
         
         do {
