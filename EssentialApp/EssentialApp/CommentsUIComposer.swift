@@ -3,8 +3,7 @@ import Combine
 import EssentialFeed
 import EssentialFeediOS
 
-public final class CommentsUIComposer {
-    private init() {}
+public enum CommentsUIComposer {
     
     private typealias CommentsPresentationAdapter = LoadResourcePresentationAdapter<[ImageComment], CommentsViewAdapter>
     
