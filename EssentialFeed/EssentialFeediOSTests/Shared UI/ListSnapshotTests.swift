@@ -24,10 +24,12 @@ final class ListSnapshotTests: XCTestCase {
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "LIST_WITH_ERROR_MESSAGE_dark")
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_ERROR_MESSAGE_light_extraExtraExtraLarge")
     }
+}
+
+// MARK: - Helpers
+private extension ListSnapshotTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT() -> ListViewController {
+    func makeSUT() -> ListViewController {
         let controller = ListViewController()
         controller.loadViewIfNeeded()
         controller.tableView.separatorStyle = .none
@@ -36,8 +38,7 @@ final class ListSnapshotTests: XCTestCase {
         return controller
     }
     
-    private func emptyList() -> [CellController] {
+    func emptyList() -> [CellController] {
         return []
     }
-    
 }

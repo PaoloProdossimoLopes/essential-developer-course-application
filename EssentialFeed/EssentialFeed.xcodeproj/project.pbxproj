@@ -41,7 +41,6 @@
 		B148110829521E7400BAD997 /* UITableView+HeaderSizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B148110729521E7400BAD997 /* UITableView+HeaderSizing.swift */; };
 		B148110A29521E8400BAD997 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B148110929521E8400BAD997 /* ErrorView.swift */; };
 		B148110D29521F1800BAD997 /* UIImageView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B148110C29521F1800BAD997 /* UIImageView+Animations.swift */; };
-		B148110F29521F5900BAD997 /* LoadMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B148110E29521F5900BAD997 /* LoadMoreCell.swift */; };
 		B148111129521F7400BAD997 /* Feed.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B148111029521F7400BAD997 /* Feed.xcassets */; };
 		B1481116295222D300BAD997 /* ResourceLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1481115295222D300BAD997 /* ResourceLoadingView.swift */; };
 		B1481118295222D900BAD997 /* ResourceLoadingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1481117295222D900BAD997 /* ResourceLoadingViewModel.swift */; };
@@ -226,7 +225,6 @@
 		B148110729521E7400BAD997 /* UITableView+HeaderSizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+HeaderSizing.swift"; sourceTree = "<group>"; };
 		B148110929521E8400BAD997 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		B148110C29521F1800BAD997 /* UIImageView+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Animations.swift"; sourceTree = "<group>"; };
-		B148110E29521F5900BAD997 /* LoadMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreCell.swift; sourceTree = "<group>"; };
 		B148111029521F7400BAD997 /* Feed.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Feed.xcassets; sourceTree = "<group>"; };
 		B1481115295222D300BAD997 /* ResourceLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLoadingView.swift; sourceTree = "<group>"; };
 		B1481117295222D900BAD997 /* ResourceLoadingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLoadingViewModel.swift; sourceTree = "<group>"; };
@@ -843,7 +841,6 @@
 				B148110B29521EF800BAD997 /* Helpers */,
 				B14810EA2952183A00BAD997 /* Feed.storyboard */,
 				B18223E7291C8BD300BC6F59 /* FeedImageCell.swift */,
-				B148110E29521F5900BAD997 /* LoadMoreCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1239,7 +1236,6 @@
 				B148110829521E7400BAD997 /* UITableView+HeaderSizing.swift in Sources */,
 				B14810FB29521D6E00BAD997 /* ListViewControllers.swift in Sources */,
 				B14811AD29522F1500BAD997 /* ImageCommentCellController.swift in Sources */,
-				B148110F29521F5900BAD997 /* LoadMoreCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
