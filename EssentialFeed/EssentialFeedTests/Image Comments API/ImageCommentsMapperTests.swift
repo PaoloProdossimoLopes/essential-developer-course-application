@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class ImageCommentsMapperTests: XCTestCase {
+final class ImageCommentsMapperTests: XCTestCase {
     
     func test_map_throwsErrorOnNon2xxHTTPResponse() throws {
         let json = makeItemsJSON([])
@@ -58,10 +58,13 @@ class ImageCommentsMapperTests: XCTestCase {
             XCTAssertEqual(result, [item1.model, item2.model])
         }
     }
+}
+
+// MARK: - Helpers
+
+private extension ImageCommentsMapperTests {
     
-    // MARK: - Helpers
-    
-    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
+    func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
         let item = ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
         
         let json: [String: Any] = [

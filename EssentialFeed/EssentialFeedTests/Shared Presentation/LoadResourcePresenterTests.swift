@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class LoadResourcePresenterTests: XCTestCase {
+final class LoadResourcePresenterTests: XCTestCase {
     
     func test_init_doesNotSendMessagesToView() {
         let (_, view) = makeSUT()
@@ -56,12 +56,14 @@ class LoadResourcePresenterTests: XCTestCase {
             .display(isLoading: false)
         ])
     }
+}
     
-    // MARK: - Helpers
+// MARK: - Helpers
+private extension LoadResourcePresenterTests {
     
-    private typealias SUT = LoadResourcePresenter<String, ViewSpy>
+    typealias SUT = LoadResourcePresenter<String, ViewSpy>
     
-    private func makeSUT(
+    func makeSUT(
         mapper: @escaping SUT.Mapper = { _ in "any" },
         file: StaticString = #filePath,
         line: UInt = #line
@@ -73,7 +75,7 @@ class LoadResourcePresenterTests: XCTestCase {
         return (sut, view)
     }
     
-    private func localized(_ key: String, file: StaticString = #filePath, line: UInt = #line) -> String {
+    func localized(_ key: String, file: StaticString = #filePath, line: UInt = #line) -> String {
         let table = "Shared"
         let bundle = Bundle(for: SUT.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
@@ -83,7 +85,7 @@ class LoadResourcePresenterTests: XCTestCase {
         return value
     }
     
-    private class ViewSpy: ResourceView, ResourceLoadingView, ResourceErrorView {
+    final class ViewSpy: ResourceView, ResourceLoadingView, ResourceErrorView {
         typealias ResourceViewModel = String
         
         enum Message: Hashable {
@@ -106,5 +108,4 @@ class LoadResourcePresenterTests: XCTestCase {
             messages.insert(.display(resourceViewModel: viewModel))
         }
     }
-    
 }
