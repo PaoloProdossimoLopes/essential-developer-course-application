@@ -11,6 +11,7 @@
 		B1481278295A502C00BAD997 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1481277295A502C00BAD997 /* SceneDelegate.swift */; };
 		B148127F295A502E00BAD997 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B148127E295A502E00BAD997 /* Assets.xcassets */; };
 		B1481282295A502E00BAD997 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1481280295A502E00BAD997 /* LaunchScreen.storyboard */; };
+		B1580184296C35C900020CA5 /* CommentsViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */; };
 		B18FBE45295A51F10045946C /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE44295A51F10045946C /* NullStore.swift */; };
 		B18FBE47295A52040045946C /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE46295A52040045946C /* CombineHelpers.swift */; };
 		B18FBE50295A52FC0045946C /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */; };
@@ -75,6 +76,7 @@
 		B1481281295A502E00BAD997 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B1481283295A502E00BAD997 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1481288295A502F00BAD997 /* EssentialAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewAdapter.swift; sourceTree = "<group>"; };
 		B18FBE44295A51F10045946C /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
 		B18FBE46295A52040045946C /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
@@ -146,19 +148,11 @@
 		B1481274295A502C00BAD997 /* EssentialApp */ = {
 			isa = PBXGroup;
 			children = (
-				B1481275295A502C00BAD997 /* AppDelegate.swift */,
-				B1481277295A502C00BAD997 /* SceneDelegate.swift */,
-				B148127E295A502E00BAD997 /* Assets.xcassets */,
-				B1481280295A502E00BAD997 /* LaunchScreen.storyboard */,
+				B1580188296C36AF00020CA5 /* Helpers */,
+				B1580187296C36A000020CA5 /* Composition */,
+				B1580186296C369700020CA5 /* Resouces */,
+				B1580185296C368D00020CA5 /* ApplicationDelegate */,
 				B1481283295A502E00BAD997 /* Info.plist */,
-				B18FBE44295A51F10045946C /* NullStore.swift */,
-				B18FBE46295A52040045946C /* CombineHelpers.swift */,
-				B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */,
-				B18FBE51295A53180045946C /* CommentsUIComposer.swift */,
-				B18FBE53295A532D0045946C /* WeakRefVirtualProxy.swift */,
-				B18FBE55295A533D0045946C /* LoadResourcePresentationAdapter.swift */,
-				B18FBE57295A534A0045946C /* FeedViewAdapter.swift */,
-				B18FBE59295A53630045946C /* UIImage+Extensions.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
@@ -173,6 +167,47 @@
 				B18FBE69295A58CD0045946C /* CommentsUIIntegrationTests.swift */,
 			);
 			path = EssentialAppTests;
+			sourceTree = "<group>";
+		};
+		B1580185296C368D00020CA5 /* ApplicationDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				B1481275295A502C00BAD997 /* AppDelegate.swift */,
+				B1481277295A502C00BAD997 /* SceneDelegate.swift */,
+			);
+			path = ApplicationDelegate;
+			sourceTree = "<group>";
+		};
+		B1580186296C369700020CA5 /* Resouces */ = {
+			isa = PBXGroup;
+			children = (
+				B148127E295A502E00BAD997 /* Assets.xcassets */,
+				B1481280295A502E00BAD997 /* LaunchScreen.storyboard */,
+			);
+			path = Resouces;
+			sourceTree = "<group>";
+		};
+		B1580187296C36A000020CA5 /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				B18FBE44295A51F10045946C /* NullStore.swift */,
+				B18FBE46295A52040045946C /* CombineHelpers.swift */,
+				B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */,
+				B18FBE51295A53180045946C /* CommentsUIComposer.swift */,
+				B18FBE53295A532D0045946C /* WeakRefVirtualProxy.swift */,
+				B18FBE55295A533D0045946C /* LoadResourcePresentationAdapter.swift */,
+				B18FBE57295A534A0045946C /* FeedViewAdapter.swift */,
+				B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
+		B1580188296C36AF00020CA5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B18FBE59295A53630045946C /* UIImage+Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		B18FBE5B295A54B20045946C /* Frameworks */ = {
@@ -312,6 +347,7 @@
 				B18FBE54295A532D0045946C /* WeakRefVirtualProxy.swift in Sources */,
 				B18FBE58295A534A0045946C /* FeedViewAdapter.swift in Sources */,
 				B18FBE52295A53180045946C /* CommentsUIComposer.swift in Sources */,
+				B1580184296C35C900020CA5 /* CommentsViewAdapter.swift in Sources */,
 				B1481276295A502C00BAD997 /* AppDelegate.swift in Sources */,
 				B18FBE5A295A53630045946C /* UIImage+Extensions.swift in Sources */,
 				B1481278295A502C00BAD997 /* SceneDelegate.swift in Sources */,

@@ -4,7 +4,7 @@ import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 
-class FeedUIIntegrationTests: XCTestCase {
+final class FeedUIIntegrationTests: XCTestCase {
     
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
@@ -297,13 +297,13 @@ class FeedUIIntegrationTests: XCTestCase {
         
         sut.loadViewIfNeeded()
         loader.completeFeedLoading(with: [image0, image1])
-
+        
         sut.simulateFeedImageBecomingVisibleAgain(at: 0)
         
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image0.url], "Expected two image URL request after first view becomes visible again")
         
         sut.simulateFeedImageBecomingVisibleAgain(at: 1)
-
+        
         XCTAssertEqual(loader.loadedImageURLs, [image0.url, image0.url, image1.url, image1.url], "Expected two new image URL request after second view becomes visible again")
     }
     
@@ -539,10 +539,13 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.simulateFeedImageViewVisible(at: 0)
         XCTAssertEqual(loader.loadedImageURLs, [image.url, image.url, image.url], "Expected no request until previous completes")
     }
+}
+
+// MARK: - Helpers
+
+private extension FeedUIIntegrationTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT(
+    func makeSUT(
         selection: @escaping (FeedImage) -> Void = { _ in },
         file: StaticString = #filePath,
         line: UInt = #line
@@ -558,11 +561,11 @@ class FeedUIIntegrationTests: XCTestCase {
         return (sut, loader)
     }
     
-    private func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "http://any-url.com")!) -> FeedImage {
+    func makeImage(description: String? = nil, location: String? = nil, url: URL = URL(string: "http://any-url.com")!) -> FeedImage {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }
     
-    private func anyImageData() -> Data {
+    func anyImageData() -> Data {
         return UIImage.make(withColor: .red).pngData()!
     }
 }

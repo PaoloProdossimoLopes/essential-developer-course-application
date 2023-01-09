@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class EssentialFeedCacheIntegrationTests: XCTestCase {
+final class EssentialFeedCacheIntegrationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -98,8 +98,10 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         
         expect(imageLoaderToPerformLoad, toLoad: lastImageData, for: image.url)
     }
-    
-    // MARK: - Helpers
+}
+
+// MARK: - Helpers
+private extension EssentialFeedCacheIntegrationTests {
     
     private func makeFeedLoader(currentDate: Date = Date(), file: StaticString = #filePath, line: UInt = #line) -> LocalFeedLoader {
         let storeURL = testSpecificStoreURL()
@@ -119,7 +121,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         return sut
     }
     
-    private func save(_ feed: [FeedImage], with loader: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
+    func save(_ feed: [FeedImage], with loader: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
         do {
             try loader.save(feed)
         } catch {
@@ -127,7 +129,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         }
     }
     
-    private func validateCache(with loader: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
+    func validateCache(with loader: LocalFeedLoader, file: StaticString = #filePath, line: UInt = #line) {
         do {
             try loader.validateCache()
         } catch {
@@ -135,7 +137,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         }
     }
     
-    private func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedLoader, toLoad expectedFeed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
         do {
             let loadedFeed = try sut.load()
             XCTAssertEqual(loadedFeed, expectedFeed, file: file, line: line)
@@ -144,7 +146,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         }
     }
     
-    private func save(_ data: Data, for url: URL, with loader: LocalFeedImageDataLoader, file: StaticString = #filePath, line: UInt = #line) {
+    func save(_ data: Data, for url: URL, with loader: LocalFeedImageDataLoader, file: StaticString = #filePath, line: UInt = #line) {
         do {
             try loader.save(data, for: url)
         } catch {
@@ -152,7 +154,7 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         }
     }
     
-    private func expect(_ sut: LocalFeedImageDataLoader, toLoad expectedData: Data, for url: URL, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedImageDataLoader, toLoad expectedData: Data, for url: URL, file: StaticString = #filePath, line: UInt = #line) {
         do {
             let loadedData = try sut.loadImageData(from: url)
             XCTAssertEqual(loadedData, expectedData, file: file, line: line)
@@ -161,24 +163,23 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         }
     }
     
-    private func setupEmptyStoreState() {
+    func setupEmptyStoreState() {
         deleteStoreArtifacts()
     }
     
-    private func undoStoreSideEffects() {
+    func undoStoreSideEffects() {
         deleteStoreArtifacts()
     }
     
-    private func deleteStoreArtifacts() {
+    func deleteStoreArtifacts() {
         try? FileManager.default.removeItem(at: testSpecificStoreURL())
     }
     
-    private func testSpecificStoreURL() -> URL {
+    func testSpecificStoreURL() -> URL {
         return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
     }
     
-    private func cachesDirectory() -> URL {
+    func cachesDirectory() -> URL {
         return FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
     }
-    
 }

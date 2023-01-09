@@ -5,14 +5,14 @@ import EssentialFeediOS
 final class FeedSnapshotTests: XCTestCase {
     
     func test_feedWithContent() {
-            let sut = makeSUT()
-            
-            sut.display(feedWithContent())
-            
-            assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_CONTENT_light")
-            assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_CONTENT_dark")
-            assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_light_extraExtraExtraLarge")
-        }
+        let sut = makeSUT()
+        
+        sut.display(feedWithContent())
+        
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_CONTENT_light")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_CONTENT_dark")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_light_extraExtraExtraLarge")
+    }
     
     func test_feedWithFailedImageLoading() {
         let sut = makeSUT()
@@ -41,10 +41,12 @@ final class FeedSnapshotTests: XCTestCase {
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_LOAD_MORE_ERROR_dark")
         assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_LOAD_MORE_ERROR_extraExtraExtraLarge")
     }
+}
+
+// MARK: - Helpers
+private extension FeedSnapshotTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT() -> ListViewController {
+    func makeSUT() -> ListViewController {
         let bundle = Bundle(for: ListViewController.self)
         let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
         let controller = storyboard.instantiateInitialViewController() as! ListViewController
@@ -54,7 +56,7 @@ final class FeedSnapshotTests: XCTestCase {
         return controller
     }
     
-    private func feedWithContent() -> [ImageStub] {
+    func feedWithContent() -> [ImageStub] {
         return [
             ImageStub(
                 description: "The East Side Gallery is an open-air gallery in Berlin. It consists of a series of murals painted directly on a 1,316 m long remnant of the Berlin Wall, located near the centre of Berlin, on Mühlenstraße in Friedrichshain-Kreuzberg. The gallery has official status as a Denkmal, or heritage-protected landmark.",
@@ -69,7 +71,7 @@ final class FeedSnapshotTests: XCTestCase {
         ]
     }
     
-    private func feedWithFailedImageLoading() -> [ImageStub] {
+    func feedWithFailedImageLoading() -> [ImageStub] {
         return [
             ImageStub(
                 description: nil,
@@ -84,19 +86,19 @@ final class FeedSnapshotTests: XCTestCase {
         ]
     }
     
-    private func feedWithLoadMoreIndicator() -> [CellController] {
+    func feedWithLoadMoreIndicator() -> [CellController] {
         let loadMore = LoadMoreCellController(callback: {})
         loadMore.display(ResourceLoadingViewModel(isLoading: true))
         return feedWith(loadMore: loadMore)
     }
     
-    private func feedWithLoadMoreError() -> [CellController] {
+    func feedWithLoadMoreError() -> [CellController] {
         let loadMore = LoadMoreCellController(callback: {})
         loadMore.display(ResourceErrorViewModel(message: "This is a multiline\nerror message"))
         return feedWith(loadMore: loadMore)
     }
     
-    private func feedWith(loadMore: LoadMoreCellController) -> [CellController] {
+    func feedWith(loadMore: LoadMoreCellController) -> [CellController] {
         let stub = feedWithContent().last!
         let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub, selection: {})
         stub.controller = cellController
@@ -106,7 +108,6 @@ final class FeedSnapshotTests: XCTestCase {
             CellController(id: UUID(), loadMore)
         ]
     }
-    
 }
 
 private extension ListViewController {

@@ -3,7 +3,6 @@ import EssentialFeed
 
 final class ValidateFeedCacheUseCaseTests: XCTestCase {
     
-    
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
@@ -130,10 +129,12 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         })
     }
     
+}
+
+// MARK: - Helpers
+private extension ValidateFeedCacheUseCaseTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
+    func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
         let store = FeedStoreSpy()
         let sut = LocalFeedLoader(store: store, currentDate: currentDate)
         checkMemoryLeak(store, file: file, line: line)
@@ -141,7 +142,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<Void, Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: Result<Void, Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         action()
 
         let receivedResult = Result { try sut.validateCache() }

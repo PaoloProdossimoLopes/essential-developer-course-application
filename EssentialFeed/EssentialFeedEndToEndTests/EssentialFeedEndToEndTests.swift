@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class EssentialFeedAPIEndToEndTests: XCTestCase {
+final class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
         switch getFeedResult() {
@@ -36,10 +36,12 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
             XCTFail("Expected successful image data result, got no result instead")
         }
     }
+}
     
-    // MARK: - Helpers
+// MARK: - Helpers
+private extension EssentialFeedAPIEndToEndTests {
     
-    private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
+    func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
         let client = ephemeralClient()
         let exp = expectation(description: "Wait for load completion")
         
@@ -59,7 +61,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         return receivedResult
     }
     
-    private func getFeedImageDataResult(file: StaticString = #filePath, line: UInt = #line) -> Result<Data, Error>? {
+    func getFeedImageDataResult(file: StaticString = #filePath, line: UInt = #line) -> Result<Data, Error>? {
         let client = ephemeralClient()
         let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
         let exp = expectation(description: "Wait for load completion")
@@ -80,26 +82,26 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         return receivedResult
     }
     
-    private var feedTestServerURL: URL {
-        return URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
+    var feedTestServerURL: URL {
+        URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
     }
     
-    private func ephemeralClient(file: StaticString = #filePath, line: UInt = #line) -> HTTPClient {
+    func ephemeralClient(file: StaticString = #filePath, line: UInt = #line) -> HTTPClient {
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         checkMemoryLeak(client, file: file, line: line)
         return client
     }
     
-    private func expectedImage(at index: Int) -> FeedImage {
-        return FeedImage(
+    func expectedImage(at index: Int) -> FeedImage {
+        FeedImage(
             id: id(at: index),
             description: description(at: index),
             location: location(at: index),
             url: imageURL(at: index))
     }
     
-    private func id(at index: Int) -> UUID {
-        return UUID(uuidString: [
+    func id(at index: Int) -> UUID {
+        UUID(uuidString: [
             "73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6",
             "BA298A85-6275-48D3-8315-9C8F7C1CD109",
             "5A0D45B3-8E26-4385-8C5D-213E160A5E3C",
@@ -111,8 +113,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         ][index])!
     }
     
-    private func description(at index: Int) -> String? {
-        return [
+    func description(at index: Int) -> String? {
+        [
             "Description 1",
             nil,
             "Description 3",
@@ -124,8 +126,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         ][index]
     }
     
-    private func location(at index: Int) -> String? {
-        return [
+    func location(at index: Int) -> String? {
+        [
             "Location 1",
             "Location 2",
             nil,
@@ -137,7 +139,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         ][index]
     }
     
-    private func imageURL(at index: Int) -> URL {
-        return URL(string: "https://url-\(index+1).com")!
+    func imageURL(at index: Int) -> URL {
+        URL(string: "https://url-\(index+1).com")!
     }
 }

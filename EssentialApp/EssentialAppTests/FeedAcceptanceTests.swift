@@ -3,7 +3,7 @@ import EssentialFeed
 import EssentialFeediOS
 @testable import EssentialApp
 
-class FeedAcceptanceTests: XCTestCase {
+final class FeedAcceptanceTests: XCTestCase {
     func test_onLaunch_displaysRemoteFeedWhenCustomerHasConnectivity() {
         let feed = launch(httpClient: .online(response), store: .empty)
         
@@ -74,10 +74,12 @@ class FeedAcceptanceTests: XCTestCase {
         XCTAssertEqual(comments.numberOfRenderedComments(), 1)
         XCTAssertEqual(comments.commentMessage(at: 0), makeCommentMessage())
     }
+}
+
+//MARK: - Helpers
+private extension FeedAcceptanceTests {
     
-    // MARK: - Helpers
-    
-    private func launch(
+    func launch(
         httpClient: HTTPClientStub = .offline,
         store: InMemoryFeedStore = .empty
     ) -> ListViewController {
@@ -89,12 +91,13 @@ class FeedAcceptanceTests: XCTestCase {
         return nav?.topViewController as! ListViewController
     }
     
-    private func enterBackground(with store: InMemoryFeedStore) {
+    func enterBackground(with store: InMemoryFeedStore) {
         let sut = SceneDelegate(httpClient: HTTPClientStub.offline, store: store, scheduler: .immediateOnMainQueue)
+        RunLoop.current.run(until: Date())
         sut.sceneWillResignActive(UIApplication.shared.connectedScenes.first!)
     }
     
-    private func showCommentsForFirstImage() -> ListViewController {
+    func showCommentsForFirstImage() -> ListViewController {
         let feed = launch(httpClient: .online(response), store: .empty)
         
         feed.simulateTapOnFeedImage(at: 0)
@@ -104,12 +107,12 @@ class FeedAcceptanceTests: XCTestCase {
         return nav?.topViewController as! ListViewController
     }
     
-    private func response(for url: URL) -> (Data, HTTPURLResponse) {
+    func response(for url: URL) -> (Data, HTTPURLResponse) {
         let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
         return (makeData(for: url), response)
     }
     
-    private func makeData(for url: URL) -> Data {
+    func makeData(for url: URL) -> Data {
         switch url.path {
         case "/image-0": return makeImageData0()
         case "/image-1": return makeImageData1()
@@ -132,28 +135,28 @@ class FeedAcceptanceTests: XCTestCase {
         }
     }
     
-    private func makeImageData0() -> Data { UIImage.make(withColor: .red).pngData()! }
-    private func makeImageData1() -> Data { UIImage.make(withColor: .green).pngData()! }
-    private func makeImageData2() -> Data { UIImage.make(withColor: .blue).pngData()! }
+    func makeImageData0() -> Data { UIImage.make(withColor: .red).pngData()! }
+    func makeImageData1() -> Data { UIImage.make(withColor: .green).pngData()! }
+    func makeImageData2() -> Data { UIImage.make(withColor: .blue).pngData()! }
     
-    private func makeFirstFeedPageData() -> Data {
+    func makeFirstFeedPageData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": [
             ["id": "2AB2AE66-A4B7-4A16-B374-51BBAC8DB086", "image": "http://feed.com/image-0"],
             ["id": "A28F5FE3-27A7-44E9-8DF5-53742D0E4A5A", "image": "http://feed.com/image-1"]
         ]])
     }
     
-    private func makeSecondFeedPageData() -> Data {
+    func makeSecondFeedPageData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": [
             ["id": "166FCDD7-C9F4-420A-B2D6-CE2EAFA3D82F", "image": "http://feed.com/image-2"],
         ]])
     }
     
-    private func makeLastEmptyFeedPageData() -> Data {
+    func makeLastEmptyFeedPageData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": []])
     }
     
-    private func makeCommentsData() -> Data {
+    func makeCommentsData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": [
             [
                 "id": UUID().uuidString,
@@ -166,8 +169,7 @@ class FeedAcceptanceTests: XCTestCase {
         ]])
     }
     
-    private func makeCommentMessage() -> String {
+    func makeCommentMessage() -> String {
         "a message"
     }
-    
 }

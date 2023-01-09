@@ -3,7 +3,6 @@ import EssentialFeed
 
 final class CacheFeedImageDataUseCaseTests: XCTestCase {
     
-    
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
@@ -36,10 +35,12 @@ final class CacheFeedImageDataUseCaseTests: XCTestCase {
             store.completeInsertionSuccessfully()
         })
     }
+}
+
+// MARK: - Helpers
+private extension CacheFeedImageDataUseCaseTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
+    func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
         let store = FeedImageDataStoreSpy()
         let sut = LocalFeedImageDataLoader(store: store)
         checkMemoryLeak(store, file: file, line: line)
@@ -47,11 +48,11 @@ final class CacheFeedImageDataUseCaseTests: XCTestCase {
         return (sut, store)
     }
     
-    private func failed() -> Result<Void, Error> {
+    func failed() -> Result<Void, Error> {
         return .failure(LocalFeedImageDataLoader.SaveError.failed)
     }
     
-    private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: Result<Void, Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: Result<Void, Error>, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         action()
 
         let receivedResult = Result { try sut.save(anyData(), for: anyURL()) }
