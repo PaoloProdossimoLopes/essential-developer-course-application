@@ -40,6 +40,8 @@ public final class ImageCommentsMapper {
     }
     
     private static func isOK(_ response: HTTPURLResponse) -> Bool {
-        (200...299).contains(response.statusCode)
+        let initalOKRange = 200
+        let endOKRange = 299
+        return (initalOKRange...endOKRange).contains(response.statusCode)
     }
 }

@@ -18,10 +18,10 @@ public struct ImageCommentsViewModel {
 
 public final class ImageCommentsPresenter {
     public static var title: String {
-        NSLocalizedString("IMAGE_COMMENTS_VIEW_TITLE",
-                          tableName: "ImageComments",
+        NSLocalizedString(Constant.COMMENT_TITLE,
+                          tableName: Constant.COMMENT_TABLE_NAME,
                           bundle: Bundle(for: Self.self),
-                          comment: "Title for the image comments view")
+                          comment: Constant.COMMENT_TITLE_DESCRIPTION)
     }
     
     public static func map(
@@ -41,5 +41,10 @@ public final class ImageCommentsPresenter {
                 username: comment.username)
         })
     }
+    
+    private enum Constant {
+        static let COMMENT_TITLE = "IMAGE_COMMENTS_VIEW_TITLE"
+        static let COMMENT_TABLE_NAME = "ImageComments"
+        static let COMMENT_TITLE_DESCRIPTION = "Title for the image comments view"
+    }
 }
-

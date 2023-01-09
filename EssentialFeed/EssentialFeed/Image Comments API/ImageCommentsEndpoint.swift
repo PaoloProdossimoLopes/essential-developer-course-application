@@ -6,7 +6,9 @@ public enum ImageCommentsEndpoint {
     public func url(baseURL: URL) -> URL {
         switch self {
         case let .get(id):
-            return baseURL.appendingPathComponent("/v1/image/\(id)/comments")
+            return baseURL.appendingPathComponent(String(format: urlFormat, id.uuidString))
         }
     }
+    
+    private var urlFormat: String { "/v1/image/%@/comments" }
 }
