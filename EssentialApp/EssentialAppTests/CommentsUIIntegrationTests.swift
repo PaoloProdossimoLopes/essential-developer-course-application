@@ -5,7 +5,7 @@ import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 
-class CommentsUIIntegrationTests: XCTestCase {
+final class CommentsUIIntegrationTests: XCTestCase {
     
     func test_commentsView_hasTitle() {
         let (sut, _) = makeSUT()
@@ -152,10 +152,12 @@ class CommentsUIIntegrationTests: XCTestCase {
         
         XCTAssertEqual(cancelCallCount, 1)
     }
+}
+
+// MARK: - Helpers
+private extension CommentsUIIntegrationTests {
     
-    // MARK: - Helpers
-    
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
+    func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
         let sut = CommentsUIComposer.commentsComposedWith(commentsLoader: loader.loadPublisher)
         trackForMemoryLeaks(loader, file: file, line: line)
@@ -163,11 +165,11 @@ class CommentsUIIntegrationTests: XCTestCase {
         return (sut, loader)
     }
     
-    private func makeComment(message: String = "any message", username: String = "any username") -> ImageComment {
+    func makeComment(message: String = "any message", username: String = "any username") -> ImageComment {
         return ImageComment(id: UUID(), message: message, createdAt: Date(), username: username)
     }
     
-    private func assertThat(_ sut: ListViewController, isRendering comments: [ImageComment], file: StaticString = #filePath, line: UInt = #line) {
+    func assertThat(_ sut: ListViewController, isRendering comments: [ImageComment], file: StaticString = #filePath, line: UInt = #line) {
         XCTAssertEqual(sut.numberOfRenderedComments(), comments.count, "comments count", file: file, line: line)
         
         let viewModel = ImageCommentsPresenter.map(comments)
@@ -179,7 +181,7 @@ class CommentsUIIntegrationTests: XCTestCase {
         }
     }
     
-    private class LoaderSpy {
+    final class LoaderSpy {
         private var requests = [PassthroughSubject<[ImageComment], Error>]()
         
         var loadCommentsCallCount: Int {
