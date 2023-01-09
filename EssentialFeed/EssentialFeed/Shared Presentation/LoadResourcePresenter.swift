@@ -15,10 +15,10 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     private let mapper: Mapper
     
     public static var loadError: String {
-        NSLocalizedString("GENERIC_CONNECTION_ERROR",
-                          tableName: "Shared",
+        NSLocalizedString(ERROR_MESSAGE_KEY,
+                          tableName: SHARED_TABLE_NAME,
                           bundle: Bundle(for: Self.self),
-                          comment: "Error message displayed when we can't load the resource from the server")
+                          comment: ERROR_MESSAGE_DESCRIPTION)
     }
     
     public init(resourceView: View, loadingView: ResourceLoadingView, errorView: ResourceErrorView, mapper: @escaping Mapper) {
@@ -53,4 +53,14 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
         errorView.display(.error(message: Self.loadError))
         loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
+    
+}
+
+//MARK: - Constants
+private extension LoadResourcePresenter {
+    
+    static var ERROR_MESSAGE_KEY: String { "GENERIC_CONNECTION_ERROR" }
+    static var SHARED_TABLE_NAME: String { "Shared" }
+    static var ERROR_MESSAGE_DESCRIPTION: String { "Error message displayed when we can't load the  resource from the server" }
+    
 }
