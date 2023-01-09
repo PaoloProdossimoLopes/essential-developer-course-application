@@ -93,6 +93,7 @@ private extension FeedAcceptanceTests {
     
     func enterBackground(with store: InMemoryFeedStore) {
         let sut = SceneDelegate(httpClient: HTTPClientStub.offline, store: store, scheduler: .immediateOnMainQueue)
+        RunLoop.current.run(until: Date())
         sut.sceneWillResignActive(UIApplication.shared.connectedScenes.first!)
     }
     
