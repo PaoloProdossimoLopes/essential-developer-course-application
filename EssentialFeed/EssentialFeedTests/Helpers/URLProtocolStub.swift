@@ -1,6 +1,6 @@
 import Foundation
 
-class URLProtocolStub: URLProtocol {
+final class URLProtocolStub: URLProtocol {
     private struct Stub {
         let data: Data?
         let response: URLResponse?

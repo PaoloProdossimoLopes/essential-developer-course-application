@@ -1,7 +1,7 @@
 import XCTest
 import EssentialFeed
 
-class SharedLocalizationTests: XCTestCase {
+final class SharedLocalizationTests: XCTestCase {
     
     func test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations() {
         let table = "Shared"
@@ -13,5 +13,4 @@ class SharedLocalizationTests: XCTestCase {
     private class DummyView: ResourceView {
         func display(_ viewModel: Any) {}
     }
-    
 }
