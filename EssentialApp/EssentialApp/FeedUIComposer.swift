@@ -3,9 +3,7 @@ import Combine
 import EssentialFeed
 import EssentialFeediOS
 
-public final class FeedUIComposer {
-    private init() {}
-    
+public enum FeedUIComposer {
     private typealias FeedPresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
     
     public static func feedComposedWith(
