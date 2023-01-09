@@ -148,20 +148,11 @@
 		B1481274295A502C00BAD997 /* EssentialApp */ = {
 			isa = PBXGroup;
 			children = (
-				B1481275295A502C00BAD997 /* AppDelegate.swift */,
-				B1481277295A502C00BAD997 /* SceneDelegate.swift */,
-				B148127E295A502E00BAD997 /* Assets.xcassets */,
-				B1481280295A502E00BAD997 /* LaunchScreen.storyboard */,
+				B1580188296C36AF00020CA5 /* Helpers */,
+				B1580187296C36A000020CA5 /* Composition */,
+				B1580186296C369700020CA5 /* Resouces */,
+				B1580185296C368D00020CA5 /* ApplicationDelegate */,
 				B1481283295A502E00BAD997 /* Info.plist */,
-				B18FBE44295A51F10045946C /* NullStore.swift */,
-				B18FBE46295A52040045946C /* CombineHelpers.swift */,
-				B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */,
-				B18FBE51295A53180045946C /* CommentsUIComposer.swift */,
-				B18FBE53295A532D0045946C /* WeakRefVirtualProxy.swift */,
-				B18FBE55295A533D0045946C /* LoadResourcePresentationAdapter.swift */,
-				B18FBE57295A534A0045946C /* FeedViewAdapter.swift */,
-				B18FBE59295A53630045946C /* UIImage+Extensions.swift */,
-				B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */,
 			);
 			path = EssentialApp;
 			sourceTree = "<group>";
@@ -176,6 +167,47 @@
 				B18FBE69295A58CD0045946C /* CommentsUIIntegrationTests.swift */,
 			);
 			path = EssentialAppTests;
+			sourceTree = "<group>";
+		};
+		B1580185296C368D00020CA5 /* ApplicationDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				B1481275295A502C00BAD997 /* AppDelegate.swift */,
+				B1481277295A502C00BAD997 /* SceneDelegate.swift */,
+			);
+			path = ApplicationDelegate;
+			sourceTree = "<group>";
+		};
+		B1580186296C369700020CA5 /* Resouces */ = {
+			isa = PBXGroup;
+			children = (
+				B148127E295A502E00BAD997 /* Assets.xcassets */,
+				B1481280295A502E00BAD997 /* LaunchScreen.storyboard */,
+			);
+			path = Resouces;
+			sourceTree = "<group>";
+		};
+		B1580187296C36A000020CA5 /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				B18FBE44295A51F10045946C /* NullStore.swift */,
+				B18FBE46295A52040045946C /* CombineHelpers.swift */,
+				B18FBE4F295A52FC0045946C /* FeedUIComposer.swift */,
+				B18FBE51295A53180045946C /* CommentsUIComposer.swift */,
+				B18FBE53295A532D0045946C /* WeakRefVirtualProxy.swift */,
+				B18FBE55295A533D0045946C /* LoadResourcePresentationAdapter.swift */,
+				B18FBE57295A534A0045946C /* FeedViewAdapter.swift */,
+				B1580183296C35C900020CA5 /* CommentsViewAdapter.swift */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
+		B1580188296C36AF00020CA5 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B18FBE59295A53630045946C /* UIImage+Extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		B18FBE5B295A54B20045946C /* Frameworks */ = {

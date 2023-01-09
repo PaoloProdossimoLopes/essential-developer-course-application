@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  EssentialApp
-//
-//  Created by Paolo Prodossimo Lopes on 26/12/22.
-//
-
 import os
 import UIKit
 import CoreData
@@ -177,6 +170,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .subscribe(on: scheduler)
             .eraseToAnyPublisher()
     }
-
 }
-
