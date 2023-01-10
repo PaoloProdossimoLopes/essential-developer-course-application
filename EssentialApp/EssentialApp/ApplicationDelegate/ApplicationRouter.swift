@@ -7,15 +7,15 @@ import EssentialFeed
 final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
     var window: UIWindow?
     
-    private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+    private lazy var baseURL = URL(string: Constant.url)!
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
     }()
     
-    private lazy var logger = Logger(subsystem: "com.essentialdeveloper.EssentialAppCaseStudy", category: "main")
+    private lazy var logger = Logger(subsystem: Constant.subsystem, category: Constant.category)
     
     private lazy var scheduler: AnyDispatchQueueScheduler = DispatchQueue(
-        label: "com.essentialdeveloper.infra.queue",
+        label: Constant.queue,
         qos: .userInitiated,
         attributes: .concurrent
     ).eraseToAnyScheduler()
@@ -31,7 +31,7 @@ final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
             return try CoreDataFeedStore(
                 storeURL: NSPersistentContainer
                     .defaultDirectoryURL()
-                    .appendingPathComponent("feed-store.sqlite"))
+                    .appendingPathComponent(Constant.sqlPathComponent))
         } catch {
             assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
@@ -137,8 +137,6 @@ final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
             .eraseToAnyPublisher()
     }
     
-    
-    
     private func makeFirstPage(items: [FeedImage]) -> Paginated<FeedImage> {
         makePage(items: items, last: items.last)
     }
@@ -147,5 +145,16 @@ final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
         Paginated(items: items, loadMorePublisher: last.map { last in
             { self.makeRemoteLoadMoreLoader(last: last) }
         })
+    }
+    
+    private enum Constant {
+        static let url = "https://ile-api.essentialdeveloper.com/essential-feed"
+        
+        static let subsystem = "com.essentialdeveloper.EssentialAppCaseStudy"
+        static let category = "main"
+        
+        static let queue = "com.essentialdeveloper.infra.queue"
+        
+        static let sqlPathComponent = "feed-store.sqlite"
     }
 }
