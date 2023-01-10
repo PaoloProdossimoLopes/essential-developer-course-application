@@ -1,7 +1,5 @@
-import os
+
 import UIKit
-import CoreData
-import Combine
 import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -10,8 +8,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         ApplicationRouter(window: nil)
     ]
     
-//    var window: UIWindow?
-//    
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
         self.init()
         
