@@ -6,17 +6,19 @@ import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    private var delegates: [UIWindowSceneDelegate] = [ApplicationRouter(window: nil)]
-
-    var window: UIWindow?
+    private(set) lazy var delegates: [UIWindowSceneDelegate] = [
+        ApplicationRouter(window: nil)
+    ]
     
+//    var window: UIWindow?
+//    
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
         self.init()
         
-        delegates.append(ApplicationRouter(
+        delegates = [ApplicationRouter(
             window: nil, httpClient: httpClient,
             store: store, scheduler: scheduler
-        ))
+        )]
     }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

@@ -44,7 +44,7 @@ final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
     }()
     
     
-    init(window: UIWindow?) {
+    init(window: UIWindow? = nil) {
         self.window = window
     }
     
@@ -70,7 +70,7 @@ final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
         }
     }
     
-    private func configureWindow() {
+    func configureWindow() {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
