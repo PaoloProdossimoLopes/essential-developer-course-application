@@ -6,15 +6,15 @@ import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    private var delegates = [UIWindowSceneDelegate]()
+    private var delegates: [UIWindowSceneDelegate] = [ApplicationRouter(window: nil)]
 
     var window: UIWindow?
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
         self.init()
         
-        delegates.append(FeedRouter(
-            window: window, httpClient: httpClient,
+        delegates.append(ApplicationRouter(
+            window: nil, httpClient: httpClient,
             store: store, scheduler: scheduler
         ))
     }

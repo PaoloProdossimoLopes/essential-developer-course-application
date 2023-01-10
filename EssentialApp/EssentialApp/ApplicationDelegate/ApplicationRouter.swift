@@ -4,7 +4,7 @@ import CoreData
 import Combine
 import EssentialFeed
 
-final class FeedRouter: NSObject, UIWindowSceneDelegate {
+final class ApplicationRouter: NSObject, UIWindowSceneDelegate {
     var window: UIWindow?
     
     private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
